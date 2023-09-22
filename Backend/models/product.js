@@ -1,0 +1,30 @@
+const moongose = require('mongoose')
+
+const { Schema } = moongose
+
+const productSchema = new Schema({
+    name: { type: String, required: [true, "Please enter name"] },
+    description: { type: String, required: [true, "Please enter description"] },
+    price: { type: Number, required: [true, "Please enter price"] },
+    rating: { type: Number, default: 0 },
+    category: { type: String, required: [true, "Please enter category"] },
+    stock: { type: Number, required: [true, "Please enter stock"] },
+    review : {type : moongose.SchemaTypes.ObjectId , ref : 'ProductReview'},
+    
+    image: [
+        {
+            public_id: {
+                type: String,
+                required: true
+            },
+            url: {
+                type: String,
+                required: true
+            }
+        }
+    ],
+},
+    { timestamps: true }
+)
+
+module.exports = moongose.model('Product', productSchema, 'Products')
