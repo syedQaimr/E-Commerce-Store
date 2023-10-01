@@ -6,10 +6,12 @@ const productSchema = new Schema({
     name: { type: String, required: [true, "Please enter name"] },
     description: { type: String, required: [true, "Please enter description"] },
     price: { type: Number, required: [true, "Please enter price"] },
-    rating: { type: Number, default: 0 },
+    ratings: { type: Number, default: 0 },
     category: { type: String, required: [true, "Please enter category"] },
     stock: { type: Number, required: [true, "Please enter stock"] },
     review : {type : moongose.SchemaTypes.ObjectId , ref : 'ProductReview'},
+    user : {type : moongose.SchemaTypes.ObjectId , ref : 'User'},
+
     
     image: [
         {
