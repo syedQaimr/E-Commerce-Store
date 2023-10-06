@@ -44,7 +44,7 @@ const productController = {
     async getAllProducts(req, res, next) {
         try {
             const productCount = await Product.countDocuments();
-            const apiFeatures = new ApiFeatures(Product.find(), req.query).search().filter().pagination(10);
+            const apiFeatures = new ApiFeatures(Product.find().populate('review'), req.query).search().filter().pagination(10);
             const products = await apiFeatures.query;
             res.status(200).json({ success: true, products, productCount });
         } catch (error) {
