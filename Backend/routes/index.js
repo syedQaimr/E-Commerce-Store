@@ -11,7 +11,7 @@ const user = require('../models/user');
 const router = express.Router();
 
 
-router.get('/products', auth , productController.getAllProducts);
+router.get('/products' , productController.getAllProducts);
 
 router.post('/products/add', auth  , authorizedRoles("admin") , productController.addProduct);
 
