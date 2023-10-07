@@ -1,0 +1,22 @@
+.loaderWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+    justify-content: center;
+    height: calc(100vh - 400px);
+  }
+  
+  .spinner {
+    animation: spin 2s linear infinite; /* You can adjust the animation duration as needed */
+  }
+  
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  
