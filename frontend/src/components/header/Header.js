@@ -14,6 +14,7 @@ import { useEffect } from "react";
 
 
 
+
 const Navbar = () => {
     const [showMediaIcons, setShowMediaIcons] = useState(false);
     const [isSticky, setIsSticky] = useState(false);
@@ -55,7 +56,7 @@ const Navbar = () => {
                             <NavLink to="/" >Home</NavLink>
                         </li>
                         <li>
-                            <NavLink to="/about" >About</NavLink>
+                            <NavLink to="/products" >Products</NavLink>
                         </li>
                         <li>
                             <NavLink to="/service" >Services</NavLink>
@@ -64,12 +65,12 @@ const Navbar = () => {
                             <NavLink to="/contact" >Contact</NavLink>
                         </li>
                         <li>
-                            <NavLink to="/nothing" >
+                            <NavLink to="/search" >
                                 <AiOutlineSearch className="icons" style={{ fontSize: '24px' }} />
                             </NavLink>
                         </li>
                         <li>
-                            <NavLink to="/nothing" >
+                            <NavLink to="/login" >
                                 <BiSolidUserCircle className="icons" style={{ fontSize: '24px' }} />
                             </NavLink>
                         </li>
@@ -99,9 +100,9 @@ const Navbar = () => {
 
                     {/* hamburget menu start */}
                     <div className="hamburger-menu">
-                        <a href="#" onClick={() => setShowMediaIcons(!showMediaIcons)}>
+                        <button  onClick={() => setShowMediaIcons(!showMediaIcons)}>
                             <GiHamburgerMenu />
-                        </a>
+                        </button>
                     </div>
                 </div>
             </nav>
