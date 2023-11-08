@@ -1,0 +1,242 @@
+.emptyCart {
+    margin: auto;
+    text-align: center;
+    padding: 10vmax;
+    height: 50vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.emptyCart>svg {
+    font-size: 5vmax;
+    color: tomato;
+}
+
+.emptyCart>p {
+    font-size: 2vmax;
+}
+
+.emptyCart>a {
+    background-color: rgb(51, 51, 51);
+    color: white;
+    border: none;
+    padding: 1vmax 3vmax;
+    cursor: pointer;
+    font: 400 1vmax "Roboto";
+    text-decoration: none;
+}
+
+.cartPage {
+    padding: 5vmax;
+}
+.cartHeader {
+    background-color: #29014b;
+    width: 90%;
+    height: 60px;
+    box-sizing: border-box;
+    margin: auto;
+    color: #ffffff;
+    display: grid;
+    grid-template-columns: 4fr 1fr 1fr;
+    font: 300 1vmax "Roboto";
+    border: 1px solid #ccc;
+    border-radius: 10px; /* Add rounded borders */
+    box-shadow: 2px 1px 10px #ccc; /* Enhance the box shadow */
+    transition: all 0.3s; /* Add a smooth transition effect */
+    align-items: center;
+
+    /* Hover effects */
+    cursor: pointer;
+}
+
+.cartHeader:hover {
+    background-color: #3d1c75; /* Change background color on hover */
+    transform: scale(1.05); /* Scale up a bit on hover */
+    box-shadow: 3px 2px 10px #ccc; /* Enhance the box shadow on hover */
+}
+
+.cartHeader>p {
+    margin: 10px;
+}
+
+.cartHeader>p:last-child {
+    text-align: end;
+}
+
+.cartContainer {
+    width: 90%;
+    margin: auto;
+    display: grid;
+    grid-template-columns: 4fr 1fr 1fr;
+}
+
+.cartInput {
+    display: flex;
+    align-items: center;
+    height: 8vmax;
+}
+
+.cartInput>button {
+    border: none;
+    background-color: rgba(0, 0, 0, 0.616);
+    padding: 0.5vmax;
+    cursor: pointer;
+    color: white;
+    transition: all 0.5s;
+}
+
+.cartInput>button:hover {
+    background-color: rgba(0, 0, 0, 0.767);
+}
+
+.cartInput>input {
+    border: none;
+    padding: 0.5vmax;
+    width: 1vmax;
+    text-align: center;
+    outline: none;
+    font: 400 0.8vmax "Roboto";
+    color: rgba(0, 0, 0, 0.74);
+}
+
+.cartSubtotal {
+    display: flex;
+    padding: 0.5vmax;
+    height: 8vmax;
+    align-items: center;
+    box-sizing: border-box;
+    font: 300 1vmax cursive;
+    justify-content: flex-end;
+    color: rgba(0, 0, 0, 0.753);
+}
+
+.cartGrossProfit {
+    display: grid;
+    grid-template-columns: 2fr 1.2fr;
+}
+
+.cartGrossProfitBox {
+    border-top: 3px solid rgb(4, 14, 107);
+    margin: 1vmax 4vmax;
+    box-sizing: border-box;
+    padding: 2vmax 0;
+    font: 300 1vmax "Roboto";
+    display: flex;
+    justify-content: space-between;
+}
+
+.checkOutBtn {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.checkOutBtn>button {
+    background-color: rgb(4, 14, 107);
+    color: white;
+    border: none;
+    padding: 0.8vmax 4vmax;
+    width: 50%;
+    font: 300 0.8vmax "Roboto";
+    margin: 1vmax 4vmax;
+    cursor: pointer;
+    border-radius: 30px;
+}
+
+@media screen and (max-width: 600px) {
+    .cartPage {
+        padding: 0;
+        min-height: 60vh;
+    }
+
+    .cartHeader {
+        width: 100%;
+        font: 300 1.7vmax "Roboto";
+        grid-template-columns: 3fr 1fr 1fr;
+    }
+
+    .cartContainer {
+        width: 100%;
+        grid-template-columns: 3fr 1fr 1fr;
+    }
+
+    .cartInput {
+        height: 20vmax;
+    }
+
+    .cartInput>button {
+        padding: 1.5vmax;
+    }
+
+    .cartInput>input {
+        width: 2vmax;
+        padding: 1.5vmax;
+        font: 400 1.8vmax "Roboto";
+    }
+
+    .cartSubtotal {
+        padding: 1.5vmax;
+        height: 20vmax;
+        font: 300 2vmax "Roboto";
+    }
+
+    .cartGrossProfit {
+        display: grid;
+        grid-template-columns: 0fr 2fr;
+    }
+
+    .cartGrossProfitBox {
+        padding: 2vmax;
+        font: 300 2vmax "Roboto";
+    }
+
+    .checkOutBtn>button {
+        padding: 2vmax 4vmax;
+        width: 100%;
+        font: 300 2vmax "Roboto";
+    }
+}
+
+
+
+/* Style the minus button */
+.detailsBlock-3-1-1 button:first-child {
+    margin-right: 10px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+/* Style the plus button */
+.detailsBlock-3-1-1 button:last-child {
+    margin-left: 10px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+/* Style the Add To Cart button */
+.detailsBlock-3-1 button {
+    padding: 10px 20px;
+    font-size: 150%;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+.detailsBlock-3-1-1 span {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0 10px;
+    /* Add spacing around the quantity number */
+    color: #333;
+    /* Change the text color to a darker shade */
+    background-color: #f0f0f0;
+    /* Add a background color */
+    padding: 5px 10px;
+    /* Add padding to create a box around the quantity */
+    border-radius: 5px;
+    /* Rounded corners */
+}
