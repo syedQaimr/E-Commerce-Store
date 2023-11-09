@@ -1,0 +1,286 @@
+.confirmOrderPage {
+    height: 100vh;
+    background-color: white;
+    display: grid;
+    grid-template-columns: 6fr 3fr;
+  }
+  
+  
+  
+  .confirmshippingArea {
+    padding: 5vmax;
+    padding-bottom: 0%;
+  }
+  
+  .confirmshippingArea > p {
+    font-family: sans-serif;
+    font-weight: 400;
+    font-size: 1.8vmax;
+  }
+  
+  .confirmshippingAreaBox,
+  .confirmCartItemsContainer {
+    margin: 2vmax;
+  }
+  
+  .confirmshippingAreaBox > div {
+    display: flex;
+    margin: 1vmax 0;
+  }
+  
+  .confirmshippingAreaBox > div > p {
+    font-family:  sans-serif;
+    font-weight: 400;
+    font-size: 1vmax;
+    color: black;
+  }
+  
+  .confirmshippingAreaBox > div > span {
+    margin: 0 1vmax;
+    font-family: sans-serif;
+    font-weight: 100;
+    font-size: 1vmax;
+    color: #575757;
+  }
+  .confirmCartItems > .cartTable {
+    width: 80%;
+    border-collapse: collapse;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    margin-left: 10%;
+    margin-right: 50%;
+  
+    /* Transition */
+    transition: background-color 0.2s ease-in-out;
+  
+    /* Professional colors */
+    background-color: #f8f9fa;
+  }
+
+
+
+  
+  .confirmCartItems > .cartTable th,
+  .confirmCartItems > .cartTable td {
+    padding: 4px;
+    text-align: center;
+  }
+  
+  .confirmCartItems > .cartTable th {
+    background-color: #0a0377;
+    color: white;
+    font-family: sans-serif;
+    font-weight: 400;
+    font-size: 1.4vmax;
+  }
+  
+  .confirmCartItems > .cartTable td {
+    background-color: #ffffff;
+    color: rgb(0, 0, 0);
+    font-family: sans-serif;
+    font-weight: 400;
+    font-size: 0.8vmax;
+  }
+
+
+  .cart-title {
+    font-size: 24px; /* Adjust the font size as needed */
+    font-weight: bold; /* Make the text bold */
+    color: #3498db; /* Change the text color to a beautiful blue */
+    text-transform: uppercase; /* Convert text to uppercase */
+    letter-spacing: 2px; /* Add some letter spacing for a stylish look */
+    text-align: center; /* Center-align the text */
+    margin-bottom: 20px; /* Add some space below the text */
+  }
+  
+  .confirmCartItems > .cartTable img {
+    max-width: 5vmax; /* Adjust the size as needed */
+    height: 5vmax; /* Adjust the size as needed */
+    border-radius: 50%; /* Create a circular shape */
+  }
+  
+  .confirmCartItems > .cartTable a {
+    color: #575757;
+    text-decoration: none;
+  }
+  
+  .confirmCartItems > .cartTable span {
+    font-family: sans-serif;
+    font-weight: 100;
+    font-size: 0.8vmax;
+    color: #5e5e5e;
+  }
+  
+  
+  
+  .orderSummary {
+  margin-top: 5%;
+  padding-left: 7vmax;
+  padding-right: 7vmax;
+  padding-bottom: 2vmax;
+  padding-top: 2vmax;
+
+
+  background-color: white;
+  width: 90%; /* Adjust the width to a percentage for responsiveness */
+  max-width: 40rem; /* Set a maximum width for larger screens */
+  height: auto; /* Use auto to adjust the height based on content */
+  box-sizing: border-box;
+  overflow: hidden;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  .orderSummary > p {
+    text-align: center;
+    font-family: sans-serif;
+    font-weight: 400;
+    font-size: 1.8vmax;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.267);
+    padding: 1vmax;
+    width: 100%;
+    margin: auto;
+    box-sizing: border-box;
+  }
+  
+  .orderSummary > div > div {
+    display: flex;
+    font-family: sans-serif;
+    font-weight: 300;
+    font-size: 1vmax;
+    justify-content: space-between;
+    margin: 2vmax 0;
+  }
+  
+  .orderSummary > div > div > span {
+    color: rgba(0, 0, 0, 0.692);
+  }
+  
+  .orderSummaryTotal {
+    display: flex;
+    font-family: sans-serif;
+    font-weight: 300;
+    font-size: 1vmax;
+    justify-content: space-between;
+    border-top: 1px solid rgba(0, 0, 0, 0.363);
+    padding: 2vmax 0;
+  }
+  
+  .orderSummary > button {
+    background-color: rgb(0, 0, 0);
+    color: white;
+    width: 100%;
+    padding: 1vmax;
+    border: none;
+    margin: auto;
+    cursor: pointer;
+    transition: 0.5s;
+    font-family:  sans-serif;
+    font-weight: 400;
+    font-size: 1vmax;
+    border-radius: 50%;
+  }
+  
+  .orderSummary > button:hover {
+    background-color: rgb(12, 3, 92);
+  }
+  
+  @media screen and (max-width: 600px) {
+    .confirmOrderPage {
+      grid-template-columns: 1fr;
+      height: unset;
+    }
+  
+    .confirmOrderPage > div:last-child {
+      border-left: 0;
+      border-top: 1px solid rgba(0, 0, 0, 0.247);
+    }
+  
+    .confirmshippingArea > p {
+      font-family: sans-serif;
+      font-weight: 400;
+      font-size: 6vw;
+    }
+  
+    .confirmshippingAreaBox > div {
+      display: flex;
+      margin: 6vw 0;
+    }
+  
+    .confirmshippingAreaBox > div > p {
+      font-family:  sans-serif;
+      font-weight: 400;
+      font-size: 4vw;
+    }
+    .confirmshippingAreaBox > div > span {
+      font-family: sans-serif;
+      font-weight: 100;
+      font-size: 4vw;
+    }
+  
+    .confirmCartItems > p {
+      font-family:  sans-serif;
+      font-weight: 400;
+      font-size: 6vw;
+    }
+  
+    .confirmCartItemsContainer {
+      max-height: 50vw;
+    }
+  
+    .confirmCartItemsContainer > div {
+      font-family:  sans-serif;
+      font-weight: 400;
+      font-size: 4vw;
+      margin: 4vw 0;
+    }
+  
+    .confirmCartItemsContainer > div > img {
+      width: 10vw;
+    }
+  
+    .confirmCartItemsContainer > div > a {
+      margin: 0;
+      width: 30%;
+    }
+  
+    .confirmCartItemsContainer > div > span {
+      font-family: sans-serif;
+      font-weight: 100;
+      font-size: 4vw;
+    }
+  
+    .orderSummary {
+      padding: 5vmax; 
+    }
+  
+    .orderSummary > p {
+      font-family: sans-serif;
+      font-weight: 400;
+      font-size: 6vw;
+      padding: 4vw;
+    }
+  
+    .orderSummary > div > div {
+      font-family:  sans-serif;
+      font-weight: 300;
+      font-size: 4vw;
+    }
+  
+    .orderSummaryTotal {
+      font-family:  sans-serif;
+      font-weight: 300;
+      font-size: 4vw;
+      padding: 5vw 0;
+    }
+  
+    .orderSummary > button {
+      padding: 4vw;
+      margin: 4vw auto;
+      font-family:  sans-serif;
+      font-weight: 400;
+      font-size: 4vw;
+    }
+  }
+  
