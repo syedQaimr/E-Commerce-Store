@@ -1,0 +1,162 @@
+.searchBox {
+    width: 100vw;
+    height: 100vh;
+    max-width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0%;
+    left: 0;
+    transition: background-color 0.5s ease-in-out;
+  
+    /* Add a drop shadow */
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.274);
+  }
+  .searchBox > input[type="text"] {
+    border-radius: 0.5rem;
+    background-color: white;
+    border: none;
+    color: rgba(0, 0, 0, 0.637);
+    padding: 1vmax 2vmax;
+    width: 50%;
+    outline: none;
+    font: 300 1.1vmax Roboto;
+    box-sizing: border-box;
+    height: 8%;
+    transition: box-shadow 0.3s ease-in-out;
+  }
+  
+  .searchBox > input[type="submit"] {
+    border-radius: 0.5rem;
+    background-color: rgb(55, 97, 214);
+    border: none;
+    padding: 1vmax;
+    width: 10%;
+    font: 300 1.1vmax Roboto;
+    cursor: pointer;
+    color: white;
+    transition: all 0.5s;
+    transform-origin: center;
+    transform: scale(1);
+  }
+
+
+
+.searchBox {
+    width: 100vw;
+    height: 100vh;
+    max-width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(231, 231, 231);
+    position: fixed;
+    top: 0%;
+    left: 0;
+    transition: background-color 0.5s ease-in-out;
+  
+    /* Add some animation */
+    animation: searchBox-appear 0.5s ease-in;
+  }
+  
+  @keyframes searchBox-appear {
+    from {
+      opacity: 0;
+      transform: scale(0.5);
+    }
+  
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  
+  .searchBox:hover {
+    background-color: rgb(220, 220, 220);
+  }
+  
+  .searchBox > input[type="text"] {
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.274);
+    background-color: white;
+    border: none;
+    color: rgba(0, 0, 0, 0.637);
+    padding: 1vmax 2vmax;
+    width: 50%;
+    outline: none;
+    border-radius: 0%;
+    font: 300 1.1vmax cursive;
+    box-sizing: border-box;
+    height: 8%;
+    transition: box-shadow 0.3s ease-in-out;
+  
+    /* Add some animation */
+    animation: searchBox-input-appear 0.5s ease-in;
+  }
+  
+  @keyframes searchBox-input-appear {
+    from {
+      opacity: 0;
+      transform: scale(0.5);
+    }
+  
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  
+  .searchBox > input[type="text"]:focus {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+  }
+  
+  .searchBox > input[type="submit"] {
+    height: 8%;
+    border-radius: 0%;
+    background-color: rgb(1, 22, 116);
+    border: none;
+    padding: 1vmax;
+    width: 10%;
+    font: 300 1.1vmax "Roboto";
+    cursor: pointer;
+    color: white;
+    transition: all 0.5s;
+    transform-origin: center;
+    transform: scale(1);
+  
+    /* Add some animation */
+    animation: searchBox-submit-appear 0.5s ease-in;
+  }
+  
+  @keyframes searchBox-submit-appear {
+    from {
+      opacity: 0;
+      transform: scale(0.5);
+    }
+  
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  
+  .searchBox > input[type="submit"]:hover {
+    background-color: rgb(55, 97, 214);
+    transform: scale(1.05);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+  }
+  
+  @media screen and (max-width: 600px) {
+    .searchBox > input[type="text"] {
+      width: 100%;
+      font: 300 4vw cursive;
+      height: 10%;
+    }
+  
+    .searchBox > input[type="submit"] {
+      height: 10%;
+      width: 30%;
+      font: 300 4vw "Roboto";
+    }
+  }
+  
