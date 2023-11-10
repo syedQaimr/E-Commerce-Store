@@ -1,0 +1,11 @@
+.cart-title {
+    font-size: 300%; /* Adjust the font size as needed */
+    font-weight: bold; /* Make the text bold */
+    color: #002077; /* Change the text color to a beautiful blue */
+    text-transform: uppercase; /* Convert text to uppercase */
+    letter-spacing: 2px; /* Add some letter spacing for a stylish look */
+    text-align: center; /* Center-align the text */
+    margin-top: 5%;
+    margin-bottom: 5%; /* Add some space below the text */
+  }
+  
