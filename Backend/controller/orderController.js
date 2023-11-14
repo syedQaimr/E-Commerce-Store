@@ -24,9 +24,11 @@ const orderController = {
                 totalPrice,
             } = req.body;
 
+            console.log(req.body , req.user._id);
 
-            const newShippingInfo = new ShippingInfo(shippingInfo);
+
             const newpaymentInfo = new PaymentInfo({ paymentInfo, paidAt: Date.now() });
+            const newShippingInfo = new ShippingInfo(shippingInfo);
 
             await newShippingInfo.save();
             await newpaymentInfo.save();
@@ -72,7 +74,7 @@ const orderController = {
     async myOrder(req, res, next) {
 
         try {
-            const orders = await Order.find({ user: req.user._id });
+            const orders = await Order.find({ user: req.user._id }).populate(['user' , 'shippingInfo' , 'paymentInfo']);
 
             res.status(200).json({ success: true, orders, });
         }
@@ -84,7 +86,7 @@ const orderController = {
     async getAllOrder(req, res, next) {
 
         try {
-            const orders = await Order.find();
+            const orders = await Order.find().populate('user');
 
             let totalAmount = 0;
 
