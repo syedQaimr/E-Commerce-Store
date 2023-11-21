@@ -10,14 +10,14 @@ const errorHandler = (error , req , res , next) => {
         err = new ErrorHandler(message,400)
     }
 
-    console.log(error.code)
-    if(error.code === 11000){
+    if(error.statusCode === 11000){
         const message = `Duplicate ${Object.keys(error.keyValue)} Entered`
         error = new ErrorHandler(message , 400)
     }
     
-
-    return res.status(error.statusCode).json({ success: false, message: error.message });
+    console.log(error.message , error.statusCode);
+        
+    return res.status(error.statusCode).json({ success: false, message: error.message , error : error.message});
 
 }
 
