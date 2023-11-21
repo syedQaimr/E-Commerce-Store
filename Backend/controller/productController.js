@@ -3,7 +3,7 @@ const Product = require('../models/product');
 const ProductReview = require('../models/productReview');
 const ApiFeatures = require('../utils/ApiFeatures');
 const ErrorHandler = require('../utils/errorhandler');
-const {BACKEND_SERVER_PATH} = require('../config/index');
+const { BACKEND_SERVER_PATH } = require('../config/index');
 const fs = require('fs');
 
 
@@ -16,19 +16,19 @@ const productController = {
 
             console.log(name, description, price, rating, category, stock, user)
 
-           
+
             const buffers = images.map((image, index) => {
-                    const buffer = Buffer.from(image.replace(/^data:image\/(png|jpg|jpeg);base64,/, ''), 'base64');
-                    const imagePath = `${Date.now()}-${name + index + 1}.png`;
+                const buffer = Buffer.from(image.replace(/^data:image\/(png|jpg|jpeg);base64,/, ''), 'base64');
+                const imagePath = `${Date.now()}-${name + index + 1}.png`;
 
-                    fs.writeFileSync(`storage/${imagePath}`, buffer);
+                fs.writeFileSync(`storage/${imagePath}`, buffer);
 
-                    return {
-                        public_id: imagePath,
-                        url: `${BACKEND_SERVER_PATH}/storage/${imagePath}`,
-                    };
-                })
-            
+                return {
+                    public_id: imagePath,
+                    url: `${BACKEND_SERVER_PATH}/storage/${imagePath}`,
+                };
+            })
+
 
             images = buffers;
 
@@ -89,7 +89,7 @@ const productController = {
             const resultPerPage = 8
             const productCount = await Product.countDocuments();
 
-            const products = await Product.find()
+            const products = await Product.find().populate({ path: 'review', populate: {  path: 'reviews.user',  },})
 
             res.status(200).json({ success: true, products, productCount, resultPerPage });
         } catch (error) {
@@ -100,11 +100,11 @@ const productController = {
         try {
 
             const productId = req.params.id;
-            var { images , name } = req.body;
+            var { images, name } = req.body;
             var updates = req.body;
 
-           if(images){
-            const buffers = images.map((image, index) => {
+            if (images) {
+                const buffers = images.map((image, index) => {
                     const buffer = Buffer.from(image.replace(/^data:image\/(png|jpg|jpeg);base64,/, ''), 'base64');
                     const imagePath = `${Date.now()}-${name + index + 1}.png`;
 
@@ -118,7 +118,7 @@ const productController = {
                 req.body.images = buffers
                 updates = req.body
             }
-            
+
 
             const product = await Product.findByIdAndUpdate(productId, updates, { new: true, runValidators: true });
 
