@@ -13,6 +13,10 @@ const SMPT_MAIL = process.env.SMPT_MAIL
 const SMPT_PASSWORD = process.env.SMPT_PASSWORD
 const SMPT_HOST = process.env.SMPT_HOST
 const SMPT_PORT = process.env.SMPT_PORT
+const STRIPE_API_KEY = process.env.STRIPE_API_KEY
+const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY
+
+
 
 
 module.exports = {
@@ -29,5 +33,6 @@ module.exports = {
     SMPT_PASSWORD,
     SMPT_HOST,
     SMPT_PORT,
-
+    STRIPE_API_KEY,
+    STRIPE_SECRET_KEY,
 }
