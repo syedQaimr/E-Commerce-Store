@@ -5,21 +5,30 @@ const ErrorHandler = require('../utils/errorhandler');
 const sendToken = require('../utils/jwtToken');
 const sendEmail = require('../utils/sendEmail');
 const crypto = require('crypto');
+const fs = require('fs');
+const {BACKEND_SERVER_PATH} = require('../config/index');
 
 const userController = {
     async userRegister(req, res, next) {
         try {
 
-            const { name , email , password } = req.body;
+            const { name , email , password , avatar } = req.body;
+
+            const buffer = Buffer.from(avatar.replace(/^data:image\/(png|jpg|jpeg);base64,/, "") , 'base64');
+
+            const imagePath = `${Date.now()}-${name}.png`;
+    
+            try {
+                fs.writeFileSync(`storage/${imagePath}` , buffer)
+            } catch (error) {
+                return next(error)
+            }
 
             const user = new User({
                 name,
                 email,
                 password,
-                avatar: {
-                    public_id: "this is sample id",
-                    url: "profilepictureUrl"
-                }
+                avatar : `${BACKEND_SERVER_PATH}/storage/${imagePath}`
             });
 
            
@@ -29,7 +38,7 @@ const userController = {
             sendToken(user , 201 , res)
 
         } catch (error) {
-            res.status(500).json({ success: false, error: error.message });
+            return next(new ErrorHandler(error.message),500);
         }
     },
 
@@ -44,6 +53,7 @@ const userController = {
         const user = await User.findOne({ email }).select("+password");
 
         if(!user){
+            console.log("Yes")
             return next(new ErrorHandler("Invalid email or password"),401);
         }
         
@@ -70,19 +80,28 @@ const userController = {
 
         const user = await User.findOne({email : req.body.email});
 
+
+
         if(!user){
             return next(new ErrorHandler("User Not Found" , 404))
         }
 
         const resetToken = user.getResetpasswordToken();
 
+
+
         await user.save({validateBeforeSave : false});
 
-        const resetPasswordUrl = `${req.protocol}://${req.get("host")}/password/reset/${resetToken}`;
+        const resetPasswordUrl = resetToken;
 
         const message = `Your password reset token is :- \n\n ${resetPasswordUrl} \n\n  If you have not request this email then, please ignore it`;
+        
 
         try{
+
+            const resetPasswordToken = crypto.createHash("sha256").update(resetToken).digest("hex")
+            console.log(resetPasswordToken , "Token")
+
 
                 await sendEmail({
                     email: user.email,
@@ -100,15 +119,17 @@ const userController = {
             user.resetPasswordExpire = undefined;
             await user.save({validateBeforeSave : false});
 
-            return next(ErrorHandler(error.message , 505));
+            return next(new ErrorHandler(error.message , 505));
         }
 
      },
 
      async resetPassword(req , res , next){
 
-        const resetPasswordToken = crypto.createHash("sha256").update(req.params.token).digest("hex")
+        console.log(req.body.token , req.body.confirmPassword , req.body.newPassword)
+        const resetPasswordToken = crypto.createHash("sha256").update(req.body.token).digest("hex")
         const user = await User.findOne({resetPasswordToken , resetPasswordExpire:{ $gt : Date.now()}});
+        console.log(resetPasswordToken)
 
 
 
@@ -116,13 +137,13 @@ const userController = {
             return next(new ErrorHandler("Resend Password Token is invalid or has been expired" , 404))
         }
 
-        if(req.body.password !== req.body.confirmPassword){
+        if(req.body.newPassword !== req.body.confirmPassword){
             return next(new ErrorHandler("Password not matched" , 404) )
         }
 
         console.log(req.body.password)
 
-        user.password = req.body.password;
+        user.password = req.body.newPassword;
         user.resetPasswordToken = undefined;
         user.resetPasswordExpire = undefined;
 
@@ -135,9 +156,19 @@ const userController = {
      },
 
      async getUserDeatisl(req,res,next){
-        const user = await User.findById(req.user.id);
+      
+        try{
 
-        res.status(200).json({ success: true, user :user});
+            const user = await User.findById(req.user.id);
+
+            res.status(200).json({ success: true, user :user});
+        }
+        catch(error){
+
+            return next(new ErrorHandler("Systematic Error",500));
+
+        }
+       
 
 
      },
@@ -156,20 +187,45 @@ const userController = {
         }
 
         user.password = req.body.newPassword
+        
+        user.save();
+        console.log(req.body.newPassword)
 
         sendToken(user , 200 , res)
      },
 
      async updateProfile(req,res,next){
 
-        const newUserData ={
-            name: req.body.name,
-            email: req.body.email,
+    try{ 
+
+        const { name , email  , avatar } = req.body;
+
+        const buffer = Buffer.from(avatar.replace(/^data:image\/(png|jpg|jpeg);base64,/, "") , 'base64');
+
+        const imagePath = `${Date.now()}-${name}.png`;
+
+        try {
+            fs.writeFileSync(`storage/${imagePath}` , buffer)
+        } catch (error) {
+            return next(error)
         }
 
-        const user = User.findByIdAndUpdate(req.user.id , newUserData , {new: true , runValidators : true , userFindAndModify: false});
+        console.log(req.user._id , req.user.id)
 
-        return res.status(200).json({ success: true});
+    const newUserData ={
+            name,
+            email,
+            avatar : `${BACKEND_SERVER_PATH}/storage/${imagePath}`
+        }
+
+        const user = await User.findByIdAndUpdate(req.user.id , newUserData , {new: true , runValidators : true , userFindAndModify: false});
+
+        return res.status(200).json({ success: true});}
+        catch(error){
+            return next(new ErrorHandler("Systematic Error" , 500))
+
+        }
+       
      },
 
      async getAllUser(req,res,next){
