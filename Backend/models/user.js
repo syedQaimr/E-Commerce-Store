@@ -16,24 +16,19 @@ const userSchema = new Schema({
     name: { type: String, required: [true, "Please enter name"] },
     email: { type: String, required: [true, "Please enter email"], unique: true, validate: [validator.isEmail, "Your Format is inCorrect"] },
     password: { type: String, required: [true, "Please enter password"], minLength: [8, "Password should be greater than 8 characters"], select: false },
-    avatar: {
-        public_id: {
-            type: String,
-            required: true
-        },
-        url: {
-            type: String,
-            required: true
-        }
-    }
+    avatar: {type: String}
     ,
     role: {
         type: String,
         default: "user"
     },
 
+    Active : { type: Boolean, required: true, default: true },
+
+
     resetPasswordToken: String,
     resetPasswordExpire: Date,
+
 
 },
     { timestamps: true }

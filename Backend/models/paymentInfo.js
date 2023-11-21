@@ -9,6 +9,8 @@ const paymentInfoSchema = new Schema({
         status: {  type: String,   required: true, }, 
     },
     paidAt: {type: Date, required: true, },
+    Active : { type: Boolean, required: true, default: true },
+
 },
     { timestamps: true }
 )

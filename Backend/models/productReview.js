@@ -16,6 +16,8 @@ const productReviewSchema = new Schema({
             comment: { type: String, required: true, },
         }
     ],
+    Active : { type: Boolean, required: true, default: true },
+
    
 },
     { timestamps: true }

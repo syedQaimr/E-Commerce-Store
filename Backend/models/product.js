@@ -13,7 +13,7 @@ const productSchema = new Schema({
     user : {type : moongose.SchemaTypes.ObjectId , ref : 'User'},
 
     
-    image: [
+    images: [
         {
             public_id: {
                 type: String,
@@ -25,6 +25,8 @@ const productSchema = new Schema({
             }
         }
     ],
+    Active : { type: Boolean, required: true, default: true },
+
 },
     { timestamps: true }
 )

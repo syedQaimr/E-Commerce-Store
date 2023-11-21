@@ -23,6 +23,7 @@ const orderSchema = new Schema({
     totalPrice: { type: Number, required: true, default: 0, },
     orderStatus: { type: String, required: true, default: "Processing", },
     deliveredAt: Date,
+    Active : { type: Boolean, required: true, default: true },
     createdAt: { type: Date, default: Date.now, },
 
 },
