@@ -5,6 +5,7 @@ const {ACCESS_TOKEN_SECRET} = require('../config/index')
 
 const User = require('../models/user');
 const jwt = require('jsonWebToken');
+const user = require('../models/user');
 
 
 const auth = async (req , res , next)=>{
@@ -16,6 +17,7 @@ const auth = async (req , res , next)=>{
     next()  
   }
   catch(error){
+    console.log("auth 2")
     return next(new ErrorHandler("Please Login to access this resource" , 401));
   }
    
