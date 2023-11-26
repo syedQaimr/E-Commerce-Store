@@ -26,6 +26,51 @@ export const getSalesReport = () => async (dispatch) => {
 
 }
 
+
+export const getOrderFullFillmentReport = () => async (dispatch) => {
+
+    try {
+        dispatch({ type: REPORT_DATA_REQUEST });
+        const { data } = await api.get('/report/orderFullfilment');
+
+        dispatch({
+            type: REPORT_DATA_SUCCESS,
+            payload: data
+        })
+    }
+    catch (error) {
+        dispatch({
+            type: REPORT_DATA_FAIL,
+            payload: error.response.data.error
+        })
+
+    }
+
+}
+
+
+
+export const getinventoryReport = () => async (dispatch) => {
+
+    try {
+        dispatch({ type: REPORT_DATA_REQUEST });
+        const { data } = await api.get('/report/inventory');
+
+        dispatch({
+            type: REPORT_DATA_SUCCESS,
+            payload: data
+        })
+    }
+    catch (error) {
+        dispatch({
+            type: REPORT_DATA_FAIL,
+            payload: error.response.data.error
+        })
+
+    }
+
+}
+
 export const clearErrors = () => async (dispatch) => {
 
     dispatch({ type: CLEAR_ERRORS })
