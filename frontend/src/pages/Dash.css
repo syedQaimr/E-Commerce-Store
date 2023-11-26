@@ -1,0 +1,45 @@
+.paddingall {
+    padding: 10px 10px 10px 10px;
+}
+
+.priceTitle {
+    font-weight: 600;
+}
+
+.priceSubTitle {
+    font-size: 16px;
+}
+
+.iconStyle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 10%;
+}
+
+.iconStyleWhite {
+    color: white;
+}
+
+.gradient{
+    background: rgb(40, 34, 70);
+    background: linear-gradient(158deg ,  rgb(40, 34, 70)0% ,  rgb(30, 47, 141 , 1)100%);
+}
+
+.gradient-light{
+    background: rgb(53, 138, 148);
+    background: linear-gradient(158deg , rgb(53, 138, 148)0% ,  rgb(91, 180, 96 , 1)100%);
+}
+
+.begcolor{
+    background: #ECEFF1;
+}
+
+.headingProduct{
+    font-size: 200%;
+    font-weight: 200;
+}
+
+.mode{
+    margin-left: 50px;
+}
