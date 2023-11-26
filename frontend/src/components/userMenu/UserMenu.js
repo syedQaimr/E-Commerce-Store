@@ -50,13 +50,13 @@ const UserMenu = ({ user }) => {
   }
 
   function orders() {
-    Navigate("/orders");
+    Navigate("/customer/orders");
   }
   function account() {
-    Navigate("/account");
+    Navigate("/customer/account");
   }
   function cart() {
-    Navigate("/cart");
+    Navigate("/customer/cart");
   }
   function logoutUser() {
     dispatch(logOut());
