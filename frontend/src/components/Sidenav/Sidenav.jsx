@@ -16,8 +16,14 @@ import HomeIcon from '@mui/icons-material/Home';
 import InfoIcon from '@mui/icons-material/Info';
 import SettingsApplicationsIcon from '@mui/icons-material/SettingsApplications';
 import LocalGroceryStoreIcon from '@mui/icons-material/LocalGroceryStore';
+import SupervisedUserCircleIcon from '@mui/icons-material/SupervisedUserCircle';
 import OrderIcon from '@mui/icons-material/ShoppingCart'
 import { useNavigate } from 'react-router-dom';
+import AssessmentIcon from '@mui/icons-material/Assessment';
+import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
+import InventoryIcon from '@mui/icons-material/Inventory';
+
+
 // import {useAppStore} from '../../AppStore'
 import {useDispatch , useSelector} from 'react-redux';
 
@@ -97,7 +103,7 @@ export default function Sidenav() {
           <ListItem  disablePadding onClick={()=>{navigate("/admin")}}>
           <ListItemButton sx={{ '&:hover': { backgroundColor: 'rgba(0, 0, 0, 0.05)'  } , fontSize: '1.5rem'}}>
               <ListItemIcon>
-                <HomeIcon />
+                <HomeIcon fontSize="large" />
               </ListItemIcon>
               <ListItemText
                 primaryTypographyProps={{ variant: 'h6', sx: { color: "#424242",  } , fontSize: '1.5rem'}}
@@ -109,7 +115,7 @@ export default function Sidenav() {
           <ListItem disablePadding onClick={()=>{navigate("/admin/about")}}>
             <ListItemButton sx={{ '&:hover': { backgroundColor: 'rgba(0, 0, 0, 0.05)' } }}>
               <ListItemIcon>
-                <InfoIcon  />
+                <InfoIcon fontSize="large" />
               </ListItemIcon>
               <ListItemText
                 primaryTypographyProps={{ variant: 'h6', sx: { color: "#424242",  fontSize: '1.5rem'} }}
@@ -121,7 +127,7 @@ export default function Sidenav() {
           <ListItem disablePadding onClick={()=>{navigate("/admin/products")}}>
             <ListItemButton sx={{ '&:hover': { backgroundColor: 'rgba(0, 0, 0, 0.05)' }}}>
               <ListItemIcon>
-                <LocalGroceryStoreIcon  />
+                <LocalGroceryStoreIcon fontSize="large" />
               </ListItemIcon>
               <ListItemText
                 primaryTypographyProps={{ variant: 'h6', sx: { color: "#424242",  },fontSize: '1.5rem' }}
@@ -130,26 +136,75 @@ export default function Sidenav() {
               />
             </ListItemButton>
           </ListItem>
-          <ListItem disablePadding onClick={()=>{navigate("/admin/settings")}}>
+          <ListItem disablePadding onClick={()=>{navigate("/admin/services")}}>
             <ListItemButton sx={{ '&:hover': { backgroundColor: 'rgba(0, 0, 0, 0.05)' } }}>
               <ListItemIcon>
-                <SettingsApplicationsIcon  />
+                <SettingsApplicationsIcon  fontSize="large" />
               </ListItemIcon>
               <ListItemText
                 primaryTypographyProps={{ variant: 'h6', sx: { color: "#424242",  },fontSize: '1.5rem' }}
-                primary="Settings"
+                primary="Services"
                 sx={{ ml: 2 }}
               />
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding onClick={()=>{navigate("/admin/orders")}}>
             <ListItemButton sx={{ '&:hover': { backgroundColor: 'rgba(0, 0, 0, 0.05)' } }}>
-              <ListItemIcon>
-                <OrderIcon  />
+              <ListItemIcon >
+                <OrderIcon fontSize="large" />
               </ListItemIcon>
               <ListItemText
                 primaryTypographyProps={{ variant: 'h6', sx: { color: "#424242",  },fontSize: '1.5rem' }}
                 primary="Orders"
+                sx={{ ml: 2 }}
+              />
+            </ListItemButton>
+          </ListItem>
+          <ListItem disablePadding onClick={()=>{navigate("/admin/users")}}>
+            <ListItemButton sx={{ '&:hover': { backgroundColor: 'rgba(0, 0, 0, 0.05)' } }}>
+              <ListItemIcon >
+                <SupervisedUserCircleIcon fontSize="large" />
+              </ListItemIcon>
+              <ListItemText
+                primaryTypographyProps={{ variant: 'h6', sx: { color: "#424242",  },fontSize: '1.5rem' }}
+                primary="Users"
+                sx={{ ml: 2 }}
+              />
+            </ListItemButton>
+          </ListItem>
+          <Divider style={{ backgroundColor: 'rgba(0, 0, 0, 0.87)' }} />
+          <ListItem disablePadding onClick={()=>{navigate("/admin/report")}}>
+            <ListItemButton sx={{ '&:hover': { backgroundColor: 'rgba(0, 0, 0, 0.05)' } }}>
+              <ListItemIcon >
+                <AssessmentIcon fontSize="large" />
+              </ListItemIcon>
+              <ListItemText
+                primaryTypographyProps={{ variant: 'h6', sx: { color: "#424242",  },fontSize: '1.5rem' }}
+                primary="Sales Report"
+                sx={{ ml: 2 }}
+              />
+            </ListItemButton>
+          </ListItem>
+          <ListItem disablePadding onClick={()=>{navigate("/admin/orderFulfilment")}}>
+            <ListItemButton sx={{ '&:hover': { backgroundColor: 'rgba(0, 0, 0, 0.05)' } }}>
+              <ListItemIcon >
+                <AssignmentTurnedInIcon fontSize="large" />
+              </ListItemIcon>
+              <ListItemText
+                primaryTypographyProps={{ variant: 'h6', sx: { color: "#424242",  },fontSize: '1.5rem' }}
+                primary="Order Delivery Report"
+                sx={{ ml: 2 }}
+              />
+            </ListItemButton>
+          </ListItem>
+          <ListItem disablePadding onClick={()=>{navigate("/admin/InventoryReport")}}>
+            <ListItemButton sx={{ '&:hover': { backgroundColor: 'rgba(0, 0, 0, 0.05)' } }}>
+              <ListItemIcon >
+                <InventoryIcon fontSize="large" />
+              </ListItemIcon>
+              <ListItemText
+                primaryTypographyProps={{ variant: 'h6', sx: { color: "#424242",  },fontSize: '1.5rem' }}
+                primary="Inventory Report"
                 sx={{ ml: 2 }}
               />
             </ListItemButton>
