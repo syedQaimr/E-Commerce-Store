@@ -9,13 +9,13 @@ import Badge from '@mui/material/Badge';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
-import SearchIcon from '@mui/icons-material/Search';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import MuiAppBar from '@mui/material/AppBar';
 import {useDispatch , useSelector} from 'react-redux';
+import {useNavigate} from 'react-router-dom'
 
 
 import Brightness4Icon from '@mui/icons-material/Brightness4';
@@ -72,6 +72,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 export default function Navbar() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+  const navigate = useNavigate()
 
   const dispatch = useDispatch();
 
@@ -96,6 +97,10 @@ export default function Navbar() {
     handleMobileMenuClose();
   };
 
+  const handleProfile = () => {
+    navigate("/account");
+  };
+
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
 
@@ -118,7 +123,7 @@ export default function Navbar() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+      <MenuItem onClick={handleProfile}>Profile</MenuItem>
       <MenuItem onClick={handleMenuClose}>My account</MenuItem>
     </Menu>
   );
@@ -146,26 +151,7 @@ export default function Navbar() {
           </IconButton>
         <p>Mode</p>
       </MenuItem>
-      <MenuItem>
-        <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={4} color="error">
-            <MailIcon />
-          </Badge>
-        </IconButton>
-        <p>Messages</p>
-      </MenuItem>
-      <MenuItem>
-        <IconButton
-          size="large"
-          aria-label="show 17 new notifications"
-          color="inherit"
-        >
-          <Badge badgeContent={17} color="error">
-            <NotificationsIcon />
-          </Badge>
-        </IconButton>
-        <p>Notifications</p>
-      </MenuItem>
+     
       <MenuItem onClick={handleProfileMenuOpen}>
         <IconButton
           size="large"
@@ -203,33 +189,10 @@ export default function Navbar() {
           >
             DashBoard
           </Typography>
-          <Search>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search…"
-              inputProps={{ 'aria-label': 'search' }}
-            />
-          </Search>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
             <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-              {darkMode ? <Brightness4Icon onClick={() => dispatch({type : "CHANGE_DARK_MODE" , payload : !darkMode})} /> : <DarkModeIcon onClick={() => dispatch({type : "CHANGE_DARK_MODE" , payload : !darkMode})} />}
-            </IconButton>
-            <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-              <Badge badgeContent={4} color="error">
-                <MailIcon />
-              </Badge>
-            </IconButton>
-            <IconButton
-              size="large"
-              aria-label="show 17 new notifications"
-              color="inherit"
-            >
-              <Badge badgeContent={17} color="error">
-                <NotificationsIcon />
-              </Badge>
+              {darkMode ? <Brightness4Icon fontSize="large" onClick={() => dispatch({type : "CHANGE_DARK_MODE" , payload : !darkMode})} /> : <DarkModeIcon fontSize="large" onClick={() => dispatch({type : "CHANGE_DARK_MODE" , payload : !darkMode})} />}
             </IconButton>
             <IconButton
               size="large"
@@ -240,7 +203,7 @@ export default function Navbar() {
               onClick={handleProfileMenuOpen}
               color="inherit"
             >
-              <AccountCircle />
+              <AccountCircle style={{ fontSize: '3rem' }}/>
             </IconButton>
           </Box>
           <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
