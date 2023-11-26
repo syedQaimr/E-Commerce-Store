@@ -14,6 +14,8 @@ const productReviewSchema = new Schema({
             name: { type: String, required: true, },
             rating: { type: Number, default: 0 },
             comment: { type: String, required: true, },
+            Active : { type: Boolean, required: true, default: true },
+
         }
     ],
     Active : { type: Boolean, required: true, default: true },
