@@ -19,7 +19,7 @@ function Product({ product }) {
   try{
     return (
       <Link className='productCard' to={`/product/${product._id}`}>
-          <img src={"https://i.ibb.co/DRST11n/1.webp"} alt={product.name}/>
+          <img src={product.images[0].url} alt={product.name}/>
           <p>{product.name}</p>
           <div>
               <ReactStars {...options}/> <span>({product.review.numOfReviews} Reviews)</span>
