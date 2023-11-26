@@ -69,7 +69,7 @@ function UpdatePassword() {
     }
     if (isUpdated) {
       alert.success("Password Updated Succesfully")
-      Navigate('/account')
+      Navigate('/customer/account')
       dispatch({ type: UPDATE_PASSWORD_RESET })
     }
   }, [dispatch, error, alert, Navigate, isUpdated])
