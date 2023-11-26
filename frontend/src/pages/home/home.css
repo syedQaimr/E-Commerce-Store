@@ -27,6 +27,7 @@
     flex-direction: column;
     text-decoration: none;
     color: rgb(48, 48, 48);
+    box-shadow: 5px 5px 10px 0px rgba(0, 0, 0, 0.5);
     margin: 2vmax;
     transition: all 0.5s;
     padding-bottom: 0.5vmax;

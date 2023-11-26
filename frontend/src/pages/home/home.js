@@ -3,10 +3,12 @@ import HeroSlider from '../../components/heroSlider/heroSlider';
 import './home.css';
 import Product from "../../components/product/Product";
 import MetaData from '../../components/layout/MetaData';
-import { getProducts } from '../../actions/productAction';
+import { getProducts , clearErrors} from '../../actions/productAction';
 import { useSelector, useDispatch } from 'react-redux';
 import Loader from '../../components/loader/Loader';
-import {useAlert} from "react-alert"
+import {useAlert} from "react-alert";
+import ErrorPage from '../../components/frontendErrorHandler/ErrorPage'
+
 
 
 
@@ -19,8 +21,14 @@ const Home = () => {
   useEffect(() => {
 
     if(error){
-      
-      return alert.error(error)
+
+      if(error === "Network Error"){
+        return <ErrorPage/>
+    }
+    else{
+    alert.error(error);
+    dispatch(clearErrors());
+    }
     }
     dispatch(getProducts());
 
