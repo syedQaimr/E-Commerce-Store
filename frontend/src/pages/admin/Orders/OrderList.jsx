@@ -10,21 +10,16 @@ import TableRow from '@mui/material/TableRow';
 import { Typography } from '@mui/material';
 import { useState, useEffect } from 'react';
 import { Divider } from '@mui/material';
-import AddCircleIcon from '@mui/icons-material/AddCircle';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
-import ResetIcon from '@mui/icons-material/RestartAlt';
 
 import Swal from 'sweetalert2';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
-import Modal from '@mui/material/Modal';
-import AddForm from '../Products/AddProduct';
-import EditForm from '../Products/EditProduct';
-import {  clearErrors, getProductsAdmin , deleteProduct } from '../../../actions/productAction';
+import { clearErrors, getAllOrders, updateOrder } from '../../../actions/orderAction';
+
 import { useSelector, useDispatch } from 'react-redux';
 import { useAlert } from "react-alert";
 import { RestartAlt } from '@mui/icons-material';
@@ -34,9 +29,11 @@ export default function OrderList() {
 
   const alert = useAlert();
   const dispatch = useDispatch();
-  const { loading, error, products } = useSelector((state) => state.products);
 
-  const {  error : deleteError, success : deleteSuccess } = useSelector((state) => state.deleteProduct);
+  const { orders, error, } = useSelector((state) => state.allOrders);
+
+  const { error: orderError, success: orderSuccess } = useSelector((state) => state.order);
+
 
 
   const [page, setPage] = useState(0);
@@ -44,110 +41,68 @@ export default function OrderList() {
   const [sortColumn, setSortColumn] = useState(null);
   const [sortDirection, setSortDirection] = useState('asc');
 
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => {
-     setOpen(false) 
-     dispatch(getProductsAdmin())
-     getData()
-  };
 
-  const [editOpen, setEditOpen] = useState(false);
-  const handleEditOpen = () => setEditOpen(true);
-  const handleEditClose = () => {
-    setEditOpen(false);
-    dispatch(getProductsAdmin());
-    getData();
-  };
 
   const [rows, setRows] = useState([]);
 
-  const [formid, setformid] = useState('');
 
   const handleReset = () => {
-    dispatch(getProductsAdmin())
+    dispatch(getAllOrders())
     getData()
- };
+  };
 
   const getData = async () => {
-    const productData = [];
-    console.log(products.length);
+    const orderData = [];
 
-    for (let i = 0; i < products.length; i++) {
-      const product = products[i];
+    for (let i = 0; i < orders.length; i++) {
+      const order = orders[i];
       const {
         _id,
-        name,
-        price,
-        category,
-        images,
-        stock,
-        ratings,
-        description
-      } = product;
+        orderStatus,
+        taxPrice,
+        totalPrice,
+        user,
+        itemsPrice,
+      } = order;
 
       const rowData = {
-        id: _id,
-        name,
-        price,
-        category,
-        images,
-        stock,
-        description,
-        ratings
+        _id,
+        orderStatus,
+        taxPrice,
+        totalPrice,
+        user,
+        itemsPrice,
       };
 
-      productData.push(rowData);
+      orderData.push(rowData);
 
     }
 
-    setRows(productData);
+    setRows(orderData);
   };
 
-  const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 400,
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
-    boxShadow: 24,
-    p: 4,
-  };
 
-  const deleteProductHandler = (id) => {
-    console.log(id)
+
+
+
+  const editProduct = (id, orderStatus) => {
+
+    console.log(id, orderStatus)
+
     Swal.fire({
       title: 'Are You Sure',
-      text: "You won't be able to revert this!",
+      text: "You to change its orderStatus!",
       icon: 'warning',
       showCancelButton: 'true',
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!',
+      confirmButtonText: 'Yes, update it!',
     }).then((result) => {
       if (result.value) {
-        const updatedRows = rows.filter((row) => row.id !== id);
-        setRows(updatedRows);
-        dispatch(deleteProduct(id))
+        dispatch(updateOrder(id, orderStatus));
       }
     });
-  };
 
-
-  const editProduct = (id, name, price, category , stock , description) => {
-    const data = {
-      id,
-      name,
-      price,
-      category,
-      stock,
-      description,
-    };
-
-    setformid(data);
-    handleEditOpen();
   };
 
   const filterData = (v) => {
@@ -191,290 +146,244 @@ export default function OrderList() {
     setPage(0);
   };
 
-  
-  useEffect(() => {
-  
-    dispatch(getProductsAdmin());
-    getData();
 
-  }, [])
 
   useEffect(() => {
     if (error) {
       alert.error(error);
       dispatch(clearErrors())
     }
-    if(deleteError){
-      alert.error(error);
+    if (orderError) {
+      alert.error(orderError);
       dispatch(clearErrors())
     }
-    if(deleteSuccess){
-      Swal.fire('Deleted!', 'Product Successfully Deleted.', 'success');
-      dispatch({type : 'DELETE_PRODUCT_RESET'})
+    if (orderSuccess) {
+      Swal.fire('Updated!', 'Order Successfully Updated.', 'success');
+      dispatch({ type: 'UPDATE_ORDER_RESET' })
     }
-    dispatch(getProductsAdmin());
-    
+    dispatch(getAllOrders());
+    getData()
 
-  }, [dispatch, alert, error , deleteSuccess , deleteError])
+
+  }, [dispatch, alert, error, orderError, orderSuccess])
 
 
   return (
     <>
-      <Modal
-        open={editOpen}
-        // onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-          <EditForm closeEvent={handleEditClose} fid={formid} />
-        </Box>
-      </Modal>
-      <Modal
-        open={open}
-        // onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-          <AddForm closeEvent={handleClose} />
-        </Box>
-      </Modal>
-      <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-        <Typography
-          gutterBottom
-          variant="h5"
-          component="div"
-          sx={{ padding: '20px' }}
-        >
-          Orders
-        </Typography>
-        <Divider style={{ marginBottom: '10px' }} />
-        <Box height={50}>
-          <Stack direction="row" spacing={2} className="my-2 mb-2">
-            <Autocomplete
-              disablePortal
-              id="como-box-demo"
-              options={rows}
-              sx={{ width: 300 }}
-              onChange={(e, v) => filterData(v)}
-              getOptionLabel={(rows) => rows.name || ''}
-              renderInput={(params) => (
-                <TextField {...params} size="small" label="Search Products" />
-              )}
-            />
-            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}></Typography>
-            <Button
-              variant="contained"
-              endIcon={<AddCircleIcon />}
-              onClick={handleOpen}
-              style={{fontSize:"155%"}}
-            >
-              Add
-            </Button>
-          </Stack>
-        </Box>
-        <TableContainer sx={{ maxHeight: 440 }}>
-          <Table stickyHeader aria-label="sticky table">
-            <TableHead>
-              <TableRow>
-                <TableCell
-                  align="center"
-                  style={{
-                    minWidth: '100px',
-                    color: 'white',
-                    backgroundColor: 'black',
-                    fontSize: '15px',
-                    cursor: 'pointer',
-                  }}
-                  onClick={() => handleSort('name')}
-                >
-                  Name
-                  {sortColumn === 'name' && (
-                    <span>{sortDirection === 'asc' ? ' ▼' : ' ▲'}</span>
-                  )}
-                </TableCell>
-                <TableCell
-                  align="center"
-                  style={{
-                    minWidth: '100px',
-                    color: 'white',
-                    backgroundColor: 'black',
-                    fontSize: '15px',
-                    cursor: 'pointer',
-                  }}
-                  onClick={() => handleSort('price')}
-                >
-                  Price
-                  {sortColumn === 'price' && (
-                    <span>{sortDirection === 'asc' ? ' ▼' : ' ▲'}</span>
-                  )}
-                </TableCell>
-                <TableCell
-                  align="center"
-                  style={{
-                    minWidth: '100px',
-                    color: 'white',
-                    backgroundColor: 'black',
-                    fontSize: '15px',
-                    cursor: 'pointer',
-                  }}
-                  onClick={() => handleSort('category')}
-                >
-                  Category
-                  {sortColumn === 'category' && (
-                    <span>{sortDirection === 'asc' ? ' ▼' : ' ▲'}</span>
-                  )}
-                </TableCell>
-                <TableCell
-                  align="center"
-                  style={{
-                    minWidth: '100px',
-                    color: 'white',
-                    backgroundColor: 'black',
-                    fontSize: '15px',
-                    cursor: 'pointer',
-                  }}
-                  onClick={() => handleSort('stock')}
-                >
-                  Stock
-                  {sortColumn === 'stock' && (
-                    <span>{sortDirection === 'asc' ? ' ▼' : ' ▲'}</span>
-                  )}
-                </TableCell>
-                <TableCell
-                  align="center"
-                  style={{
-                    minWidth: '100px',
-                    color: 'white',
-                    backgroundColor: 'black',
-                    fontSize: '15px',
-                    cursor: 'pointer',
-                  }}
-                  onClick={() => handleSort('ratings')}
-                >
-                  Rating
-                  {sortColumn === 'ratings' && (
-                    <span>{sortDirection === 'asc' ? ' ▼' : ' ▲'}</span>
-                  )}
-                </TableCell>
-                <TableCell
-                  align="center"
-                  style={{
-                    minWidth: '100px',
-                    color: 'white',
-                    backgroundColor: 'black',
-                    fontSize: '15px',
-                  }}
-                >
-                  Action
-                </TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {sortedRows()
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row) => {
-                  return (
-                    <TableRow
-                      hover
-                      role="checkbox"
-                      tabIndex={-1}
-                      key={row.code}
-                    >
-                      <TableCell
-                        align="center"
-                        style={{ minWidth: '100px', fontSize: '13px' }}
+      
+        <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+          <Typography
+            gutterBottom
+            variant="h5"
+            component="div"
+            sx={{ padding: '20px' }}
+          >
+            Orders
+          </Typography>
+          <Divider style={{ marginBottom: '10px' }} />
+          <Box height={50}>
+            <Stack direction="row" spacing={2} className="my-2 mb-2">
+              <Autocomplete
+                disablePortal
+                id="como-box-demo"
+                options={rows}
+                sx={{ width: 300 }}
+                onChange={(e, v) => filterData(v)}
+                getOptionLabel={(rows) => rows.user.email || ''}
+                renderInput={(params) => (
+                  <TextField {...params} size="small" label="Search Orders" />
+                )}
+              />
+
+            </Stack>
+          </Box>
+          <TableContainer sx={{ maxHeight: 440 }}>
+            <Table stickyHeader aria-label="sticky table">
+              <TableHead>
+                <TableRow>
+                  <TableCell
+                    align="center"
+                    style={{
+                      minWidth: '100px',
+                      color: 'white',
+                      backgroundColor: 'black',
+                      fontSize: '15px',
+                      cursor: 'pointer',
+                    }}
+                    onClick={() => handleSort('email')}
+                  >
+                    User Email
+                    {sortColumn === 'email' && (
+                      <span>{sortDirection === 'asc' ? ' ▼' : ' ▲'}</span>
+                    )}
+                  </TableCell>
+                  <TableCell
+                    align="center"
+                    style={{
+                      minWidth: '100px',
+                      color: 'white',
+                      backgroundColor: 'black',
+                      fontSize: '15px',
+                      cursor: 'pointer',
+                    }}
+                    onClick={() => handleSort('orderStatus')}
+                  >
+                    Order Status
+                    {sortColumn === 'orderStatus' && (
+                      <span>{sortDirection === 'asc' ? ' ▼' : ' ▲'}</span>
+                    )}
+                  </TableCell>
+                  <TableCell
+                    align="center"
+                    style={{
+                      minWidth: '100px',
+                      color: 'white',
+                      backgroundColor: 'black',
+                      fontSize: '15px',
+                      cursor: 'pointer',
+                    }}
+                    onClick={() => handleSort('taxPrice')}
+                  >
+                    Tax Price
+                    {sortColumn === 'taxPrice' && (
+                      <span>{sortDirection === 'asc' ? ' ▼' : ' ▲'}</span>
+                    )}
+                  </TableCell>
+                  <TableCell
+                    align="center"
+                    style={{
+                      minWidth: '100px',
+                      color: 'white',
+                      backgroundColor: 'black',
+                      fontSize: '15px',
+                      cursor: 'pointer',
+                    }}
+                    onClick={() => handleSort('tostalprice')}
+                  >
+                    Total Price
+                    {sortColumn === 'tostalprice' && (
+                      <span>{sortDirection === 'asc' ? ' ▼' : ' ▲'}</span>
+                    )}
+                  </TableCell>
+                  <TableCell
+                    align="center"
+                    style={{
+                      minWidth: '100px',
+                      color: 'white',
+                      backgroundColor: 'black',
+                      fontSize: '15px',
+                      cursor: 'pointer',
+                    }}
+                    onClick={() => handleSort('itemsPrice')}
+                  >
+                    Items price
+                    {sortColumn === 'itemsPrice' && (
+                      <span>{sortDirection === 'asc' ? ' ▼' : ' ▲'}</span>
+                    )}
+                  </TableCell>
+                  <TableCell
+                    align="center"
+                    style={{
+                      minWidth: '100px',
+                      color: 'white',
+                      backgroundColor: 'black',
+                      fontSize: '15px',
+                    }}
+                  >
+                    Action
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {sortedRows()
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((row) => {
+                    return (
+                      <TableRow
+                        hover
+                        role="checkbox"
+                        tabIndex={-1}
+                        key={row.code}
                       >
-                        {row.name}
-                      </TableCell>
-                      <TableCell
-                        align="center"
-                        style={{ minWidth: '100px', fontSize: '13px' }}
-                      >
-                        {row.price}
-                      </TableCell>
-                      <TableCell
-                        align="center"
-                        style={{ minWidth: '100px', fontSize: '13px' }}
-                      >
-                        {row.category}
-                      </TableCell>
-                      <TableCell
-                        align="center"
-                        style={{ minWidth: '100px', fontSize: '13px' }}
-                      >
-                        {row.stock}
-                      </TableCell>
-                      <TableCell
-                        align="center"
-                        style={{ minWidth: '100px', fontSize: '13px' }}
-                      >
-                        {row.ratings}
-                      </TableCell>
-                      <TableCell style={{ minWidth: '100px', fontSize: '13px' }}>
-                        <Stack
-                          spacing={4}
-                          direction="row"
-                          alignItems="center"
-                          justifyContent="center"
+                        <TableCell
+                          align="center"
+                          style={{ minWidth: '100px', fontSize: '13px' }}
                         >
-                          <EditIcon
-                            style={{
-                              fontSize: '145%',
-                              color: 'blue',
-                              cursor: 'pointer',
-                            }}
-                            onClick={() =>
-                              editProduct(
-                                row.id,
-                                row.name,
-                                row.price,
-                                row.category,
-                                row.stock,
-                                row.description,
-                              )
-                            }
-                          />
-                          <DeleteIcon
-                            style={{
-                              fontSize: '145%',
-                              color: 'darkred',
-                              cursor: 'pointer',
-                            }}
-                            onClick={() => {
-                              deleteProductHandler(row.id);
-                            }}
-                          />
-                        </Stack>
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[10, 25, 100]}
-          component="div"
-          count={rows.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
-      </Paper>
-      <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' , marginTop : '1rem' }}>
-  <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}></Typography>
-  <Button
-    variant="contained"
-    endIcon={<RestartAlt />}
-    onClick={handleReset}
-    style={{ fontSize: "155%" }}
-  >
-    Reset
-  </Button>
-</div>
-    </>
+                          {row.user.email}
+                        </TableCell>
+                        <TableCell
+                          align="center"
+                          style={{ minWidth: '100px', fontSize: '13px', color: row.orderStatus === 'Delivered' ? 'green' : 'red' }}
+                        >
+                          {row.orderStatus}
+                        </TableCell>
+                        <TableCell
+                          align="center"
+                          style={{ minWidth: '100px', fontSize: '13px' }}
+                        >
+                          {row.taxPrice}
+                        </TableCell>
+                        <TableCell
+                          align="center"
+                          style={{ minWidth: '100px', fontSize: '13px' }}
+                        >
+                          {row.totalPrice}
+                        </TableCell>
+                        <TableCell
+                          align="center"
+                          style={{ minWidth: '100px', fontSize: '13px' }}
+                        >
+                          {row.itemsPrice}
+                        </TableCell>
+                        <TableCell style={{ minWidth: '100px', fontSize: '13px' }}>
+                          <Stack
+                            spacing={4}
+                            direction="row"
+                            alignItems="center"
+                            justifyContent="center"
+                          >
+                            <EditIcon
+                              style={{
+                                fontSize: '145%',
+                                color: 'blue',
+                                cursor: 'pointer',
+                              }}
+                              onClick={() =>
+                                editProduct(
+                                  row._id,
+                                  row.orderStatus
+                                )
+                              }
+                            />
+                          </Stack>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <TablePagination
+            rowsPerPageOptions={[10, 25, 100]}
+            component="div"
+            count={rows.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
+        </Paper>
+        <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginTop: '1rem' }}>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}></Typography>
+          <Button
+            variant="contained"
+            endIcon={<RestartAlt />}
+            onClick={handleReset}
+            style={{ fontSize: "155%" }}
+          >
+            Reset
+          </Button>
+        </div>
+      </>
   );
 }
