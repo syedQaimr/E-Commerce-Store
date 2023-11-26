@@ -99,7 +99,7 @@
     cursor: pointer;
     color: white;
     transition: all 0.5s;
-    background-color:rgb(89, 61, 214);
+    background-color: rgb(89, 61, 214);
     font: 500 0.7vmax "Roboto";
     border-radius: 20px;
     padding: 0.5vmax 2vmax;
@@ -132,7 +132,7 @@
 
 .submitReview {
     border: none;
-    background-color:rgb(89, 61, 214);
+    background-color: rgb(89, 61, 214);
     font: 500 0.7vmax "Roboto";
     border-radius: 20px;
     padding: 0.6vmax 2vmax;
@@ -144,7 +144,7 @@
 }
 
 .submitReview:hover {
-    background-color:rgb(29, 3, 145);
+    background-color: rgb(29, 3, 145);
     transform: scale(1.1);
 }
 
@@ -298,3 +298,80 @@
         font: 300 5vw cursive;
     }
 }
+
+.detailsBlock-3-1-1 {
+    display: flex;
+    align-items: center;
+}
+
+.detailsBlock-3-1-1 button {
+    padding: 5px 10px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+/* Style the minus button */
+.detailsBlock-3-1-1 button:first-child {
+    margin-right: 10px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+/* Style the plus button */
+.detailsBlock-3-1-1 button:last-child {
+    margin-left: 10px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+/* Style the Add To Cart button */
+.detailsBlock-3-1 button {
+    padding: 10px 20px;
+    font-size: 150%;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+.detailsBlock-3-1-1 span {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0 10px;
+    /* Add spacing around the quantity number */
+    color: #333;
+    /* Change the text color to a darker shade */
+    background-color: #f0f0f0;
+    /* Add a background color */
+    padding: 5px 10px;
+    /* Add padding to create a box around the quantity */
+    border-radius: 5px;
+    /* Rounded corners */
+}
+@keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  .submitDialog {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    line-height: 24px;
+    color: #333;
+  }
+  
+  .submitDialogTextArea {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    line-height: 20px;
+    color: #333;
+  }
