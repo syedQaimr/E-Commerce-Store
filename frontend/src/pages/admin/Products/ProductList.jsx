@@ -15,25 +15,31 @@ import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
+import DeleteIcon from '@mui/icons-material/DeleteSweep';
+import { useNavigate } from 'react-router-dom';
+import ReviewsIcon from '@mui/icons-material/Reviews';
+
+
 import Swal from 'sweetalert2';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import Modal from '@mui/material/Modal';
 import AddForm from './AddProduct';
 import EditForm from './EditProduct';
-import {  clearErrors, getProductsAdmin , deleteProduct } from '../../../actions/productAction';
+import { clearErrors, getProductsAdmin, deleteProduct } from '../../../actions/productAction';
 import { useSelector, useDispatch } from 'react-redux';
 import { useAlert } from "react-alert";
+import { RestartAlt } from '@mui/icons-material';
 
 
 export default function ProductList() {
 
   const alert = useAlert();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { loading, error, products } = useSelector((state) => state.products);
 
-  const {  error : deleteError, success : deleteSuccess } = useSelector((state) => state.deleteProduct);
+  const { error: deleteError, success: deleteSuccess } = useSelector((state) => state.deleteProduct);
 
 
   const [page, setPage] = useState(0);
@@ -44,19 +50,27 @@ export default function ProductList() {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
-     setOpen(false) 
-     dispatch(getProductsAdmin())
+    setOpen(false)
+    dispatch(getProductsAdmin())
+    getData()
   };
 
   const [editOpen, setEditOpen] = useState(false);
   const handleEditOpen = () => setEditOpen(true);
-  const handleEditClose = () => setEditOpen(false);
+  const handleEditClose = () => {
+    setEditOpen(false);
+    dispatch(getProductsAdmin());
+    getData();
+  };
 
   const [rows, setRows] = useState([]);
 
   const [formid, setformid] = useState('');
 
-
+  const handleReset = () => {
+    dispatch(getProductsAdmin())
+    getData()
+  };
 
   const getData = async () => {
     const productData = [];
@@ -72,7 +86,8 @@ export default function ProductList() {
         images,
         stock,
         ratings,
-        description
+        description,
+        Active
       } = product;
 
       const rowData = {
@@ -83,8 +98,12 @@ export default function ProductList() {
         images,
         stock,
         description,
-        ratings
+        ratings,
+        Active,
       };
+
+      console.log(rowData)
+
 
       productData.push(rowData);
 
@@ -109,28 +128,28 @@ export default function ProductList() {
     console.log(id)
     Swal.fire({
       title: 'Are You Sure',
-      text: "You won't be able to revert this!",
+      text: "Your Customers visiualization also change!",
       icon: 'warning',
       showCancelButton: 'true',
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!',
+      confirmButtonText: 'Yes, Update Active!',
     }).then((result) => {
       if (result.value) {
-        const updatedRows = rows.filter((row) => row.id !== id);
-        setRows(updatedRows);
         dispatch(deleteProduct(id))
       }
     });
   };
 
 
-  const editProduct = (id, name, price, category) => {
+  const editProduct = (id, name, price, category, stock, description) => {
     const data = {
       id,
       name,
       price,
       category,
+      stock,
+      description,
     };
 
     setformid(data);
@@ -178,31 +197,25 @@ export default function ProductList() {
     setPage(0);
   };
 
-  
-  useEffect(() => {
-  
-    dispatch(getProductsAdmin());
-    getData();
 
-  }, [])
 
   useEffect(() => {
     if (error) {
       alert.error(error);
       dispatch(clearErrors())
     }
-    if(deleteError){
-      alert.error(error);
+    if (deleteError) {
+      alert.error(deleteError);
       dispatch(clearErrors())
     }
-    if(deleteSuccess){
-      Swal.fire('Deleted!', 'Product Successfully Deleted.', 'success');
-      dispatch({type : 'DELETE_PRODUCT_RESET'})
+    if (deleteSuccess) {
+      Swal.fire('Updated!', 'Product status Successfully Updated.', 'success');
+      dispatch({ type: 'DELETE_PRODUCT_RESET' })
     }
     dispatch(getProductsAdmin());
-    
 
-  }, [dispatch, alert, error , deleteSuccess , deleteError])
+
+  }, [dispatch, alert, error, deleteSuccess, deleteError])
 
 
   return (
@@ -255,7 +268,7 @@ export default function ProductList() {
               variant="contained"
               endIcon={<AddCircleIcon />}
               onClick={handleOpen}
-              style={{fontSize:"155%"}}
+              style={{ fontSize: "155%" }}
             >
               Add
             </Button>
@@ -336,6 +349,44 @@ export default function ProductList() {
                     color: 'white',
                     backgroundColor: 'black',
                     fontSize: '15px',
+                    cursor: 'pointer',
+                  }}
+                  onClick={() => handleSort('ratings')}
+                >
+                  Rating
+                  {sortColumn === 'ratings' && (
+                    <span>{sortDirection === 'asc' ? ' ▼' : ' ▲'}</span>
+                  )}
+                </TableCell>
+                <TableCell
+                  align="center"
+                  style={{
+                    minWidth: '100px',
+                    color: 'white',
+                    backgroundColor: 'black',
+                    fontSize: '15px',
+                  }}
+                >
+                  View Reviews
+                </TableCell>
+                <TableCell
+                  align="center"
+                  style={{
+                    minWidth: '100px',
+                    color: 'white',
+                    backgroundColor: 'black',
+                    fontSize: '15px',
+                  }}
+                >
+                  Active
+                </TableCell>
+                <TableCell
+                  align="center"
+                  style={{
+                    minWidth: '100px',
+                    color: 'white',
+                    backgroundColor: 'black',
+                    fontSize: '15px',
                   }}
                 >
                   Action
@@ -377,6 +428,35 @@ export default function ProductList() {
                       >
                         {row.stock}
                       </TableCell>
+                      <TableCell
+                        align="center"
+                        style={{ minWidth: '100px', fontSize: '13px' }}
+                      >
+                        {row.ratings}
+                      </TableCell>
+                      <TableCell style={{ minWidth: '100px', fontSize: '13px' }}>
+                        <Stack
+                          spacing={4}
+                          direction="row"
+                          alignItems="center"
+                          justifyContent="center"
+                        >
+                          <ReviewsIcon
+                            style={{
+                              fontSize: '145%',
+                              color: 'purple',
+                              cursor: 'pointer',
+                            }}
+                            onClick={() => { navigate(`/admin/reviews/${row.id}`) }}
+                          />
+                          
+                        </Stack>
+                      </TableCell>
+                      <TableCell
+                        align="center"
+                        style={{ minWidth: '100px', fontSize: '13px', color: row.Active === true ? 'green' : 'red' }}                      >
+                        {row.Active ? "Active" : "InActive"}
+                      </TableCell>
                       <TableCell style={{ minWidth: '100px', fontSize: '13px' }}>
                         <Stack
                           spacing={4}
@@ -395,7 +475,9 @@ export default function ProductList() {
                                 row.id,
                                 row.name,
                                 row.price,
-                                row.category
+                                row.category,
+                                row.stock,
+                                row.description,
                               )
                             }
                           />
@@ -427,6 +509,17 @@ export default function ProductList() {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
+      <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginTop: '1rem' }}>
+        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}></Typography>
+        <Button
+          variant="contained"
+          endIcon={<RestartAlt />}
+          onClick={handleReset}
+          style={{ fontSize: "155%" }}
+        >
+          Reset
+        </Button>
+      </div>
     </>
   );
 }
