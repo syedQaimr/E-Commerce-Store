@@ -76,7 +76,7 @@ function LoginSignUp() {
     };
 
     const currentLocation = useLocation();
-    const redirect = currentLocation.search ? currentLocation.search.split('=')[1] : "/account";
+    const redirect = currentLocation.search ? currentLocation.search.split('=')[1] : "/customer/account";
     
 
     useEffect(()=>{
