@@ -13,19 +13,19 @@ import { Divider } from '@mui/material';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
-import DeleteIcon from '@mui/icons-material/Delete';
+import DeleteIcon from '@mui/icons-material/DeleteSweep';
 
 import Swal from 'sweetalert2';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
-import { clearErrors, getProductDetails } from '../../../actions/productAction';
+import { clearErrors, getProductDetails , updateProduct} from '../../../actions/productAction';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { useAlert } from "react-alert";
 import { RestartAlt } from '@mui/icons-material';
 import { DELETE_USER_RESET } from '../../../constants/userContant';
-import ReactStars from "react-rating-stars-component"
+import Rating from '@mui/material/Rating';
 
 
 
@@ -38,7 +38,9 @@ export default function UsersList() {
   const { product, loading, error } = useSelector((state) => state.prductDetails);
   const { id } = useParams();
 
-  const { error: deleteError, isDeleted: deleteSuccess } = useSelector((state) => state.deleteUser);
+
+  const { error : deleteError, success : deleteSuccess } = useSelector((state) => state.editProduct)
+
 
 
 
@@ -61,7 +63,7 @@ export default function UsersList() {
   };
 
   const getData = async () => {
-    const productData = [];
+    const reviewData = [];
 
     for (let i = 0; i < product.review.reviews.length; i++) {
       const review = product.review.reviews[i];
@@ -70,6 +72,7 @@ export default function UsersList() {
         name,
         rating,
         comment,
+        Active
       } = review;
 
       const rowData = {
@@ -77,34 +80,38 @@ export default function UsersList() {
         name,
         rating,
         comment,
+        Active
       };
 
-
-      productData.push(rowData);
+      console.log(rowData)
+      reviewData.push(rowData);
 
     }
 
-    setRows(productData);
+    setRows(reviewData);
   };
 
 
 
   const deleteUserHandler = (id) => {
-    console.log(id)
     Swal.fire({
       title: 'Are You Sure',
-      text: "You won't be able to revert this!",
+      text: "You Changes Effect Customers!",
       icon: 'warning',
       showCancelButton: 'true',
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!',
+      confirmButtonText: 'Yes, Update Status!',
     }).then((result) => {
       if (result.value) {
         const updatedRows = rows.filter((row) => row.id !== id);
         setRows(updatedRows);
-        // dispatch(deleteUser(id))
-      }
+
+        const updateReview = { review : id}
+        console.log(product._id )
+        dispatch(updateProduct(product._id , updateReview))    
+         
+       }
     });
   };
 
@@ -161,12 +168,12 @@ export default function UsersList() {
       dispatch(clearErrors())
     }
     if (deleteError) {
-      alert.error(error);
+      alert.error(deleteError);
       dispatch(clearErrors())
     }
     if (deleteSuccess) {
-      Swal.fire('Deleted!', 'User Successfully Deleted', 'success');
-      dispatch({ type: DELETE_USER_RESET })
+      Swal.fire('Updated!', 'Review Updated Successfully ', 'success');
+      dispatch({ type: 'EDIT_PRODUCT_RESET' })
     }
 
 
@@ -186,7 +193,7 @@ export default function UsersList() {
           component="div"
           sx={{ padding: '20px' }}
         >
-          Users
+          Reviews
         </Typography>
         <Divider style={{ marginBottom: '10px' }} />
         <Box height={50}>
@@ -257,6 +264,18 @@ export default function UsersList() {
                     <span>{sortDirection === 'asc' ? ' ▼' : ' ▲'}</span>
                   )}
                 </TableCell>
+                <TableCell
+                  align="center"
+                  style={{
+                    minWidth: '100px',
+                    color: 'white',
+                    backgroundColor: 'black',
+                    fontSize: '15px',
+                    cursor: 'pointer',
+                  }}
+                >
+                  Active
+                </TableCell>
 
                 <TableCell
                   align="center"
@@ -307,16 +326,18 @@ export default function UsersList() {
                           alignItems="center"
                           justifyContent="center"
                         >
-                          <ReactStars
-                            edit={false}
-                            color="blue"
-                            activeColor="blue"
-                            size={window.innerWidth < 600 ? 20 : 25}
+                          <Rating
                             value={row.rating}
-                            isHalf={true}
-                            style={{ display: "flex", justifyContent: "center" }}
+                            size="large"
                           />
                         </Stack>
+                      </TableCell>
+
+                      <TableCell
+                        align="center"
+                        style={{ minWidth: '100px', fontSize: '13px', color: row.Active === true ? 'green' : 'red' }}
+                      >
+                        {row.Active ? "Active" : "InActive"}
                       </TableCell>
 
                       <TableCell style={{ minWidth: '100px', fontSize: '13px' }}>
