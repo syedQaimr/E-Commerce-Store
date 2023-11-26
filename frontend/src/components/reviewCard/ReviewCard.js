@@ -3,6 +3,7 @@ import React from "react";
 import profile from '../../images/profile.png'
 
 const ReviewCard = ({ review }) => {
+   console.log(review.rating)
     const options = {
         edit: false,
         color: "rgb(20,20,20,0.1)",
