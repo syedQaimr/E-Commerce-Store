@@ -1,6 +1,9 @@
 import {
    CHANGE_DARK_MODE,
-   CHANGE_DOPEN
+   CHANGE_DOPEN,
+   DASHBOARD_DATA_FAIL,
+   DASHBOARD_DATA_REQUEST,
+   DASHBOARD_DATA_SUCCESS,
   } from "../constants/systemConstants";
   
   export const systemReducer = (
@@ -18,6 +21,33 @@ import {
           ...state,
           dOpen: action.payload,
         };
+      default:
+        return state;
+    }
+  };
+
+  export const adminDashboardReducer = (
+    state = { data:{}},
+    action
+  ) => {
+    switch (action.type) {
+      case DASHBOARD_DATA_REQUEST:
+        return{
+            ...state,
+            loading : true
+        }
+      case DASHBOARD_DATA_SUCCESS:
+        return {
+          ...state,
+          loading : false,
+          data : action.payload
+        };
+        case DASHBOARD_DATA_FAIL:
+          return {
+            ...state,
+            loading : false,
+            data : null
+          };
       default:
         return state;
     }
