@@ -15,7 +15,7 @@ function Account() {
   useEffect(()=>{
 
     if(isAuthenticated === false){
-      Navigate('/login');
+      Navigate('/customer/login');
     }
 
   },[isAuthenticated , Navigate])
@@ -29,7 +29,7 @@ function Account() {
         <div>
           <h1>My Profile</h1>
           <img src={user.avatar} alt={user.name} />
-          <Link to='/me/update'>Edit Profile</Link>
+          <Link to='/customer/me/update'>Edit Profile</Link>
         </div>
         <div>
           <div>
@@ -45,8 +45,8 @@ function Account() {
             <p>{String(user.createdAt).substr(0,10)}</p>
           </div>
           <div>
-            <Link to="/order">My Orders</Link>
-            <Link to="/password/update">Change Password</Link>
+            <Link to="/customer/orders">My Orders</Link>
+            <Link to="/customer/password/update">Change Password</Link>
 
           </div>
         </div>
