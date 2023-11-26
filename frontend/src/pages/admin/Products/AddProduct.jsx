@@ -97,6 +97,7 @@ export default function AddForm({ closeEvent }) {
 
 
     useEffect(() => {
+        console.log(error)
         if (error) {
             Swal.fire("Not Submitted", "Your file has been submitted", "error");
             dispatch(clearErrors())
