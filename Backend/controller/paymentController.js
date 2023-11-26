@@ -23,7 +23,8 @@ const paymentController = {
 
         } catch (error) {
             console.log(error)
-            return next(new ErrorHandler(error.message),500);
+            return next(new ErrorHandler(error.message, 500, "processPayemnt", "", "paymentController"));
+
 
         }
     },
@@ -33,7 +34,8 @@ const paymentController = {
            res.status(200).json({ success: true, stripeApiKey : STRIPE_API_KEY });
 
         } catch (error) {
-            return next(new ErrorHandler(error.message),500);
+            return next(new ErrorHandler(error.message, 500, "sendStripeApiKey", "", "paymentController"));
+
         }
     }
 }

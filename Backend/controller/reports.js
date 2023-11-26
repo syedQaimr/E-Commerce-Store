@@ -60,7 +60,8 @@ const reportController = {
       res.status(200).json({ success: true, report : salesReport });
 
     } catch (error) {
-      return next(new ErrorHandler(error.message), 500);
+      return next(new ErrorHandler(error.message, 500, "salesReport", "Product , Order", "reportController"));
+
     }
   },
   async generateOrderFulfillmentReport(req, res, next) {
@@ -112,7 +113,8 @@ const reportController = {
 
       res.status(200).json({ success: true, report : orderFulfillmentReport });
     } catch (error) {
-      return next(new ErrorHandler(error.message), 500);
+      return next(new ErrorHandler(error.message, 500, "generateOrderFulfillmentReport", "Product , Order", "reportController"));
+
     }
 
   },
@@ -146,13 +148,14 @@ const reportController = {
 
     }
     catch (error) {
-      return next(new ErrorHandler(error.message), 500);
+      return next(new ErrorHandler(error.message, 500, "generateInventoryReport", "Product", "reportController"));
     }
   }
 
 }
 
 function calculateProcessingTime(order) {
+
   if (order.orderStatus !== 'Delivered' || !order.createdAt || !order.deliveredAt) {
     return null;
   }

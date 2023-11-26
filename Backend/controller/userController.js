@@ -6,276 +6,345 @@ const sendToken = require('../utils/jwtToken');
 const sendEmail = require('../utils/sendEmail');
 const crypto = require('crypto');
 const fs = require('fs');
-const {BACKEND_SERVER_PATH} = require('../config/index');
+const { BACKEND_SERVER_PATH } = require('../config/index');
 
 const userController = {
     async userRegister(req, res, next) {
         try {
 
-            const { name , email , password , avatar } = req.body;
 
-            const buffer = Buffer.from(avatar.replace(/^data:image\/(png|jpg|jpeg);base64,/, "") , 'base64');
+
+            const { name, email, password, avatar } = req.body;
+
+            const buffer = Buffer.from(avatar.replace(/^data:image\/(png|jpg|jpeg);base64,/, ""), 'base64');
 
             const imagePath = `${Date.now()}-${name}.png`;
-    
+
+
+
+
             try {
-                fs.writeFileSync(`storage/${imagePath}` , buffer)
+                fs.writeFileSync(`storage/${imagePath}`, buffer)
             } catch (error) {
-                return next(error)
+                return next(new ErrorHandler(error.message, 500, "not available", "User", "userRegister"))
             }
 
             const user = new User({
                 name,
                 email,
                 password,
-                avatar : `${BACKEND_SERVER_PATH}/storage/${imagePath}`
+                avatar: `${BACKEND_SERVER_PATH}/storage/${imagePath}`
             });
 
-           
-           
+
+
             await user.save();
-           
-            sendToken(user , 201 , res)
+
+            sendToken(user, 201, res)
 
         } catch (error) {
-            return next(new ErrorHandler(error.message),500);
+            return next(new ErrorHandler(error.message, 500, "userRegister", "User", "userController"));
         }
     },
 
-    async loginUser(req , res , next){
+    async loginUser(req, res, next) {
 
-        const {email , password} = req.body;
+        try {
+            const { email, password } = req.body;
 
-        if(!email || !password){
-            return next(new ErrorHandler("Please Enter Email & Password", 400))
+            if (!email || !password) {
+                return next(new ErrorHandler("Please Enter Email & Password", 400, "userlogin", "User", "userController"))
+            }
+
+            const user = await User.findOne({ email }).select("+password");
+
+            if (!user) {
+                console.log("Yes")
+                return next(new ErrorHandler("Invalid email or password", 401, "userlogin", "User", "userController"));
+            }
+
+            const isPasswordMatched = await user.comparePassword(password);
+
+            if (!isPasswordMatched) {
+                return next(new ErrorHandler("Invalid email or password", 401, "userlogin", "User", "userController"));
+            }
+
+            if(!user.Active){
+                return next(new ErrorHandler("Admin Remove You Kindly Contact us", 401, "userlogin", "User", "userController"));
+            }
+
+
+            sendToken(user, 200, res)
+        }
+        catch (error) {
+            return next(new ErrorHandler(error.message, 500, "userlogin", "User", "userController"));
+
         }
 
-        const user = await User.findOne({ email }).select("+password");
 
-        if(!user){
-            console.log("Yes")
-            return next(new ErrorHandler("Invalid email or password"),401);
-        }
-        
-        const isPasswordMatched = await user.comparePassword(password);
-
-        if(!isPasswordMatched){
-            return next(new ErrorHandler("Invalid email or password"),401);
-        }
-
-
-        sendToken(user , 200 , res)
-
-       
     },
 
-    async logOutUser(req , res , next){
+    async logOutUser(req, res, next) {
 
-       res.cookie("token" , null , {expires : new Date(Date.now()), httpOnly : true});
-       res.status(200).json({ success: true, message : "Logged Out"});
+        try {
+            res.cookie("token", null, { expires: new Date(Date.now()), httpOnly: true });
+            res.status(200).json({ success: true, message: "Logged Out" });
+        }
+        catch (error) {
+            return next(new ErrorHandler(error.message, 500, "logOutUser", "User", "userController"));
+        }
+
 
     },
 
-    async forgotPassword(req , res , next){
+    async forgotPassword(req, res, next) {
 
-        const user = await User.findOne({email : req.body.email});
+        const user = await User.findOne({ email: req.body.email });
 
 
 
-        if(!user){
-            return next(new ErrorHandler("User Not Found" , 404))
+        if (!user) {
+            return next(new ErrorHandler("User Not Found", 404, "forgotPassword", "User", "userController"))
         }
 
         const resetToken = user.getResetpasswordToken();
 
 
 
-        await user.save({validateBeforeSave : false});
+        await user.save({ validateBeforeSave: false });
 
         const resetPasswordUrl = resetToken;
 
         const message = `Your password reset token is :- \n\n ${resetPasswordUrl} \n\n  If you have not request this email then, please ignore it`;
-        
 
-        try{
+
+        try {
 
             const resetPasswordToken = crypto.createHash("sha256").update(resetToken).digest("hex")
-            console.log(resetPasswordToken , "Token")
+            console.log(resetPasswordToken, "Token")
 
 
-                await sendEmail({
-                    email: user.email,
-                    subject : "ecommerce password recovery",
-                    message,
-                });
+            await sendEmail({
+                email: user.email,
+                subject: "ecommerce password recovery",
+                message,
+            });
 
-                res.status(200).json({ success: true, message : `Email send to ${user.email} successfully`});
-
-
+            res.status(200).json({ success: true, message: `Email send to ${user.email} successfully` });
 
 
-        }catch(error){
+
+
+        } catch (error) {
             user.resetPasswordToken = undefined;
             user.resetPasswordExpire = undefined;
-            await user.save({validateBeforeSave : false});
+            await user.save({ validateBeforeSave: false });
 
-            return next(new ErrorHandler(error.message , 505));
+            return next(new ErrorHandler(error.message, 500, "forgotPassword", "User", "userController"));
         }
 
-     },
+    },
 
-     async resetPassword(req , res , next){
+    async resetPassword(req, res, next) {
 
-        console.log(req.body.token , req.body.confirmPassword , req.body.newPassword)
-        const resetPasswordToken = crypto.createHash("sha256").update(req.body.token).digest("hex")
-        const user = await User.findOne({resetPasswordToken , resetPasswordExpire:{ $gt : Date.now()}});
-        console.log(resetPasswordToken)
+        try {
+
+            const resetPasswordToken = crypto.createHash("sha256").update(req.body.token).digest("hex")
+            const user = await User.findOne({ resetPasswordToken, resetPasswordExpire: { $gt: Date.now() } });
+            console.log(resetPasswordToken)
 
 
 
-        if(!user){
-            return next(new ErrorHandler("Resend Password Token is invalid or has been expired" , 404))
+            if (!user) {
+                return next(new ErrorHandler("Resend Password Token is invalid or has been expired", 404, "resetPassword", "User", "userController"))
+            }
+
+            if (req.body.newPassword !== req.body.confirmPassword) {
+                return next(new ErrorHandler("Password not matched", 404, "resetPassword", "User", "userController"))
+            }
+
+
+            user.password = req.body.newPassword;
+            user.resetPasswordToken = undefined;
+            user.resetPasswordExpire = undefined;
+
+
+
+            await user.save();
+
+            res.status(200).json({ success: true, message: `Password Successfully Update` });
         }
+        catch (error) {
+            return next(new ErrorHandler(error.message, 500, "resetPassword", "User", "userController"));
 
-        if(req.body.newPassword !== req.body.confirmPassword){
-            return next(new ErrorHandler("Password not matched" , 404) )
         }
+    },
 
-        console.log(req.body.password)
+    async getUserDeatisl(req, res, next) {
 
-        user.password = req.body.newPassword;
-        user.resetPasswordToken = undefined;
-        user.resetPasswordExpire = undefined;
-
-
-
-        await user.save();
-
-        res.status(200).json({ success: true, message : `Password Successfully Update`});
-
-     },
-
-     async getUserDeatisl(req,res,next){
-      
-        try{
+        try {
 
             const user = await User.findById(req.user.id);
 
-            res.status(200).json({ success: true, user :user});
+            res.status(200).json({ success: true, user: user });
         }
-        catch(error){
+        catch (error) {
 
-            return next(new ErrorHandler("Systematic Error",500));
+            return next(new ErrorHandler("Systematic Error", 500, "getUserDeatisl", "User", "userController"));
 
-        }
-       
-
-
-     },
-
-     async updatePassword(req,res,next){
-        const user = await User.findById(req.user.id).select("+password");
-
-        const isPasswordMatched = await user.comparePassword(req.body.oldPassword);
-
-        if(!isPasswordMatched){
-            return next(new ErrorHandler("old password is incorrect" , 400))
         }
 
-        if(req.body.newPassword !== req.body.confirmPassword){
-            return next(new ErrorHandler("password does not match" , 400))
-        }
 
-        user.password = req.body.newPassword
-        
-        user.save();
-        console.log(req.body.newPassword)
 
-        sendToken(user , 200 , res)
-     },
+    },
 
-     async updateProfile(req,res,next){
-
-    try{ 
-
-        const { name , email  , avatar } = req.body;
-
-        const buffer = Buffer.from(avatar.replace(/^data:image\/(png|jpg|jpeg);base64,/, "") , 'base64');
-
-        const imagePath = `${Date.now()}-${name}.png`;
+    async updatePassword(req, res, next) {
 
         try {
-            fs.writeFileSync(`storage/${imagePath}` , buffer)
-        } catch (error) {
-            return next(error)
+
+
+            const user = await User.findById(req.user.id).select("+password");
+
+            const isPasswordMatched = await user.comparePassword(req.body.oldPassword);
+
+            if (!isPasswordMatched) {
+                return next(new ErrorHandler("old password is incorrect", 400, "updatePassword", "User", "userController"))
+            }
+
+            if (req.body.newPassword !== req.body.confirmPassword) {
+                return next(new ErrorHandler("password does not match", 400, "updatePassword", "User", "userController"))
+            }
+
+            user.password = req.body.newPassword
+
+            user.save();
+            console.log(req.body.newPassword)
+
+            sendToken(user, 200, res)
+        }
+        catch (error) {
+            return next(new ErrorHandler(error.message, 500, "updatePassword", "User", "userController"));
+
+        }
+    },
+
+    async updateProfile(req, res, next) {
+
+        try {
+
+            const { name, email, avatar } = req.body;
+
+            const buffer = Buffer.from(avatar.replace(/^data:image\/(png|jpg|jpeg);base64,/, ""), 'base64');
+
+            const imagePath = `${Date.now()}-${name}.png`;
+
+            try {
+                fs.writeFileSync(`storage/${imagePath}`, buffer)
+            } catch (error) {
+                return next(error)
+            }
+
+            console.log(req.user._id, req.user.id)
+
+            const newUserData = {
+                name,
+                email,
+                avatar: `${BACKEND_SERVER_PATH}/storage/${imagePath}`
+            }
+
+            const user = await User.findByIdAndUpdate(req.user.id, newUserData, { new: true, runValidators: true, userFindAndModify: false });
+
+            return res.status(200).json({ success: true });
+        }
+        catch (error) {
+            return next(new ErrorHandler("Systematic Error", 500, "updateProfile", "User", "userController"))
+
         }
 
-        console.log(req.user._id , req.user.id)
+    },
 
-    const newUserData ={
-            name,
-            email,
-            avatar : `${BACKEND_SERVER_PATH}/storage/${imagePath}`
+    async getAllUser(req, res, next) {
+
+        try {
+            const users = await User.find();
+
+            return res.status(200).json({ success: true, users });
+        }
+        catch (error) {
+            return next(new ErrorHandler(error.message, 500, "getAllUser", "User", "userController"))
+
         }
 
-        const user = await User.findByIdAndUpdate(req.user.id , newUserData , {new: true , runValidators : true , userFindAndModify: false});
 
-        return res.status(200).json({ success: true});}
-        catch(error){
-            return next(new ErrorHandler("Systematic Error" , 500))
+    },
+
+    async getUser(req, res, next) {
+
+        try {
+            const user = await User.findById(req.params.id);
+
+            if (!user) {
+                return next(
+                    new ErrorHandler(`user does not exits with Id ${req.params.id}`, 400, "getUser", "User", "userController")
+                )
+            }
+
+            return res.status(200).json({ success: true, user });
+        }
+        catch (error) {
+            return next(new ErrorHandler(error.message, 500, "getUser", "User", "userController"))
+        }
+
+    },
+
+    async updateUser(req, res, next) {
+
+        try {
+
+            const newUserData = {
+                name: req.body.name,
+                email: req.body.email,
+                role: req.body.role,
+            }
+
+            const user = await User.findByIdAndUpdate(req.params.id, newUserData, { new: true, runValidators: true, userFindAndModify: false });
+
+            if (!user) {
+                return next(new ErrorHandler(`user does not exits with id: ${req.params.id}`, 400,"updateUser", "User", "userController"))
+            }
+
+            return res.status(200).json({ success: true });
+
+        }
+        catch (error) {
+            return next(new ErrorHandler(error.message, 500,"updateUser", "User", "userController"))
+
+        }
+
+    },
+
+    async deleteUser(req, res, next) {
+
+        try{
+            const user = await User.findById(req.params.id);
+            if (!user) {
+                return next(new ErrorHandler(`user does not exits with id: ${req.params.id}`,400 ,  "deleteUser", "User", "userController"))
+            }
+    
+            user.Active = !user.Active;
+
+            await user.save();
+
+    
+            return res.status(200).json({ success: true, message: "User Delete Successfully" });
+        }
+        catch(error)
+        {
+            return next(new ErrorHandler(error.message,500 ,  "deleteUser", "User", "userController"))
 
         }
        
-     },
-
-     async getAllUser(req,res,next){
-
-        const users = await User.find();
-
-        return res.status(200).json({ success: true , users});
-     },
-
-     async getUser(req,res,next){
-
-        const user = await User.findById(req.params.id);
-
-        if(!user){
-            return next(
-                new ErrorHandler(`user does not exits with Id ${req.params.id}`)
-            )
-        }
-
-        return res.status(200).json({ success: true , user});
-     },
-
-     async updateUser(req,res,next){
-
-        const newUserData ={
-            name: req.body.name,
-            email: req.body.email,
-            role : req.body.role,
-        }
-
-        const user = await User.findByIdAndUpdate(req.params.id , newUserData , {new: true , runValidators : true , userFindAndModify: false});
-
-        if(!user){
-            return next(new ErrorHandler(`user does not exits with id: ${req.params.id}`))
-        }
-
-        return res.status(200).json({ success: true});
-     },
-
-     async deleteUser(req,res,next){
-
-        const user = await User.findById(req.params.id);
-        if(!user){
-            return next(new ErrorHandler(`user does not exits with id: ${req.params.id}`))
-        }
-
-        await user.deleteOne()
-
-        return res.status(200).json({ success: true , message : "User Delete Successfully" });
-     },
+    },
 }
 
 module.exports = userController;

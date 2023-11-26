@@ -5,8 +5,6 @@ const ShippingInfo = require('../models/ShippingInfo');
 const Product = require('../models/product');
 const moment = require('moment');
 
-
-
 const ApiFeatures = require('../utils/ApiFeatures');
 const ErrorHandler = require('../utils/errorhandler')
 
@@ -52,7 +50,8 @@ const orderController = {
 
             res.status(200).json({ success: true, order });
         } catch (error) {
-            res.status(500).json({ success: false, error: error.message });
+            return next(new ErrorHandler(error.message, 500, "newOrder", "Order", "orderController"));
+
         }
 
     },
@@ -63,13 +62,13 @@ const orderController = {
             const order = await Order.findById(req.params.id).populate("user", "name email");
 
             if (!order) {
-                return next(new ErrorHandler("Order not found with this Id", 404));
+                return next(new ErrorHandler("Order not found with this Id", 404, "getSingleOrder", "Order", "orderController"));
             }
 
             res.status(200).json({ success: true, order, });
         }
         catch (error) {
-            res.status(500).json({ success: false, error: error.message });
+            return next(new ErrorHandler(error.message, 500, "getSingleOrder", "Order", "orderController"));
         }
     },
 
@@ -81,7 +80,8 @@ const orderController = {
             res.status(200).json({ success: true, orders, });
         }
         catch (error) {
-            res.status(500).json({ success: false, error: error.message });
+            return next(new ErrorHandler(error.message, 500, "myOrder", "Order", "orderController"));
+
         }
     },
 
@@ -99,7 +99,8 @@ const orderController = {
             res.status(200).json({ success: true, totalAmount, orders, });
         }
         catch (error) {
-            res.status(500).json({ success: false, error: error.message });
+            return next(new ErrorHandler(error.message, 500, "getAllOrder", "Order", "orderController"));
+
         }
 
     },
@@ -168,9 +169,15 @@ const orderController = {
     
             // Total number of orders
             const totalOrders = await Order.countDocuments();
+
     
             // Total amount of all orders
             const totalAmount = await Order.aggregate([
+                {
+                    $match: {
+                        orderStatus: "Delivered"
+                    }
+                },
                 {
                     $group: {
                         _id: null,
@@ -180,7 +187,7 @@ const orderController = {
             ]);
     
             // Total number of orders with orderStatus as 'Shippable'
-            const shippableOrders = await Order.countDocuments({ orderStatus: 'Shippable' });
+            const shippableOrders = await Order.countDocuments({ orderStatus: 'Processing' });
     
             // Total number of products from Product Model
             const totalProducts = await Product.countDocuments();
@@ -202,7 +209,7 @@ const orderController = {
                 ordersCountByDate,
             });
         } catch (error) {
-            res.status(500).json({ success: false, error: error.message });
+            return next(new ErrorHandler(error.message, 500, "adminDashBoard", "Product , Order", "orderController"));
         }
     },
 
@@ -214,11 +221,11 @@ const orderController = {
             const order = await Order.findById(req.params.id);
 
             if (!order) {
-                return next(new ErrorHandler("Order not found with this Id", 404));
+                return next(new ErrorHandler("Order not found with this Id", 404, "updateOrder", "Order", "orderController"));
             }
 
             if (order.orderStatus === "Delivered") {
-                return next(new ErrorHandler("You have already delivered this order", 400));
+                return next(new ErrorHandler("You have already delivered this order", 400, "updateOrder", "Order", "orderController"));
             }
 
             if (req.body.status === "Shipped" || req.body.status === "Processing") {
@@ -238,7 +245,7 @@ const orderController = {
 
         }
         catch (error) {
-            res.status(500).json({ success: false, error: error.message });
+            return next(new ErrorHandler(error.message, 500, "updateOrder", "Order", "orderController"));
         }
 
     },
@@ -248,7 +255,7 @@ const orderController = {
 
             const order = await Order.findById(req.params.id);
             if (!order) {
-                return next(new ErrorHandler("Order not found with this Id", 404));
+                return next(new ErrorHandler("Order not found with this Id", 404, "deleteOrder", "Order", "orderController"));
             }
             await order.deleteOne();
 
@@ -256,7 +263,8 @@ const orderController = {
 
         }
         catch (error) {
-            res.status(500).json({ success: false, error: error.message });
+            return next(new ErrorHandler(error.message, 500, "deleteOrder", "Order", "orderController"));
+
         }
 
     },
