@@ -2,10 +2,11 @@ import { createStore , combineReducers , applyMiddleware} from "redux";
 import thunk from 'redux-thunk';
 import { composeWithDevTools} from 'redux-devtools-extension'
 import {deleteProductReducer, editProductReducer, newProductReducer, newReviewReducer, productDetailsReducer, productReducer} from "../reducers/productReducer";
-import { userReducer , profileReducer  , resetPasswordReducer } from "../reducers/userReducer";
+import { userReducer , profileReducer  , resetPasswordReducer, allUserReducer, userDeleteReducer } from "../reducers/userReducer";
 import {cartReducer} from '../reducers/cartReducer'
-import {myOrdersReducer, newOrderReducer} from '../reducers/orderReducer'
-import { systemReducer } from "../reducers/systemReducer";
+import {allOrdersReducer, myOrdersReducer, newOrderReducer, orderReducer} from '../reducers/orderReducer'
+import { adminDashboardReducer, systemReducer } from "../reducers/systemReducer";
+import { reportReducer } from "../reducers/reportReducer";
 
 // import { JSON } from "react-router-dom";
 
@@ -25,6 +26,12 @@ const reducer = combineReducers({
     newProduct : newProductReducer,
     deleteProduct : deleteProductReducer,
     editProduct : editProductReducer,
+    allOrders : allOrdersReducer,
+    order : orderReducer,
+    adminDashboard : adminDashboardReducer,
+    allUsers : allUserReducer,
+    deleteUser : userDeleteReducer,
+    report : reportReducer
 });
 
 let initialState ={
