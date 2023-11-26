@@ -28,14 +28,26 @@ export const getProducts = (keyword = "", currentPage = 1, price = [0, 100000000
 
         dispatch({
             type: ALL_PRODUCT_SUCCESS,
-            payload: data
+            payload: {
+                ...data, // Copy existing properties from data
+                currentPage // Add pageNumber attribute
+            }
         })
     }
     catch (error) {
+        
+        if(error.message === "Network Error"){
+            dispatch({
+                type: ALL_PRODUCT_FAIL,
+                payload: error.message
+            })
+        }
+        else{
         dispatch({
             type: ALL_PRODUCT_FAIL,
             payload: error.response.data.error
         })
+    }
 
     }
 
@@ -103,6 +115,7 @@ export const addNewProduct = (newProduct) => async (dispatch) => {
         })
     }
     catch (error) {
+
         dispatch({
             type: NEW_PRODUCT_FAIL,
             payload: error.response.data.error
@@ -114,17 +127,22 @@ export const addNewProduct = (newProduct) => async (dispatch) => {
 
 
 
-export const updateProduct = (id , updateProduct) => async (dispatch) => {
+export const updateProduct = (id , updateProduct={}) => async (dispatch) => {
 
     try {
-        dispatch({ type: EDIT_PRODUCT_REQUEST });
-        const { data } = await api.put(`/products/${id}` , updateProduct);
+       
+            console.log("Hello")
+            dispatch({ type: EDIT_PRODUCT_REQUEST });
+            const { data } = await api.put(`/products/${id}` , updateProduct);
+    
+    
+            dispatch({
+                type: EDIT_PRODUCT_SUCCESS,
+                payload: data.success
+            })
 
-
-        dispatch({
-            type: EDIT_PRODUCT_SUCCESS,
-            payload: data.success
-        })
+        
+       
     }
     catch (error) {
         dispatch({
