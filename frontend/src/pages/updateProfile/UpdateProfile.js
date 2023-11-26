@@ -66,7 +66,7 @@ function UpdateProfile() {
         if (isUpdated) {
             alert.success("Profile Updated Succesfully")
             dispatch(loadUser())
-            Navigate('/account')
+            Navigate('/customer/account')
             dispatch({type: UPDATE_PROFILE_RESET})
         }
     }, [dispatch, error, alert, Navigate, user, isUpdated])
