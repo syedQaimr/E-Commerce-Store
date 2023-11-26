@@ -8,10 +8,10 @@ function Search() {
     const [keyword , setKeyword] = useState('');
     const searchSubmitHandler = (e) =>{
         if(keyword.trim()){
-            navigate(`/products/${keyword}`) 
+            navigate(`/customer/products/${keyword}`) 
         }
         else{
-            navigate("/products")
+            navigate("/customer/products")
         }
     }
   return (
