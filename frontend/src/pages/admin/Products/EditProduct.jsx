@@ -4,19 +4,54 @@ import CloseIcon from "@mui/icons-material/Close";
 import { Grid, TextField } from "@mui/material";
 import { useEffect } from "react";
 import { CurrencyRupee } from '@mui/icons-material';
+import TextareaAutosize from '@mui/material/TextareaAutosize';
+import Autocomplete from '@mui/material/Autocomplete';
+import Input from '@mui/material/Input';
+import { updateProduct, clearErrors , getProductsAdmin } from '../../../actions/productAction'
+
+
 import Swal from "sweetalert2";
-// import { useAppStore } from '../../AppStore'
+import { useDispatch, useSelector } from 'react-redux';
 
 
 
 
-export default function EditForm({ closeEvent , fid } ) {
+export default function EditForm({ closeEvent , fid }) {
+
+    const dispatch = useDispatch();
     const [name, setName] = useState('');
     const [price, setPrice] = useState('');
     const [category, setCategory] = useState('');
-    // const setRows = useAppStore((state) => state.setRows);
-    // const rows = useAppStore((state) => state.rows);
-    const [rows , setRows] = useState([]);
+    const [description, setDescription] = useState('');
+    const [stock, setStock] = useState('');
+    const [id, setId] = useState('');
+
+    const [selectedFiles, setSelectedFiles] = useState([]);
+    const [imagePreviews, setImagePreviews] = useState([]);
+
+    const { error, success } = useSelector((state) => state.editProduct)
+
+
+    const categories = [
+        "Laptop",
+        "Electronic",
+        "FoodItem",
+        "Cloth",
+        "HouseItem",
+        "Shoes",
+        "SmartPhone"
+    ];
+
+    useEffect(()=>{
+        setName(fid.name);
+        setCategory(fid.category);
+        setDescription(fid.description);
+        setName(fid.name);
+        setPrice(fid.price);
+        setStock(fid.stock);
+        setId(fid.id);
+    },[])
+
 
     const handleNameChange = (event) => {
         setName(event.target.value)
@@ -30,39 +65,73 @@ export default function EditForm({ closeEvent , fid } ) {
         setCategory(event.target.value)
     }
 
-    useEffect(()=>{
-        console.log(fid.name);
-        setName(fid.name);
-        setCategory(fid.category);
-        setPrice(fid.price)
-    },[]);
-
-
-    const createUser = () => {
-        closeEvent();
-        const currentDate = new Date();
-
-        
-        const day = currentDate.getDate();
-        const month = currentDate.getMonth() + 1; 
-        const year = currentDate.getFullYear();
-
-      
-        const formattedDate = `${month}/${day}/${year}`;
-
-
-        const product = { id: 6, name: name, price: price, category: category, date: formattedDate }
-        rows.push(product);
-        setRows(rows)
-
-        Swal.fire("Updated", "Your Product has been updated", "success");
+    const handleStockChange = (event) => {
+        setStock(event.target.value)
     }
+
+
+    const handleDescriptionChange = (event) => {
+        setDescription(event.target.value);
+    };
+
+
+    const handleFileChange = (event) => {
+        const filesArray = Array.from(event.target.files);
+
+        // Filter to keep only image files
+        const imageFiles = filesArray.filter((file) => file.type.startsWith('image/'));
+
+        setSelectedFiles(imageFiles);
+
+        // Read and store previews of selected images
+        const filePreviews = imageFiles.map((file) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => {
+                setImagePreviews((prevPreviews) => [...prevPreviews, reader.result]);
+            };
+            return reader;
+        });
+    };
+
+
+    const createProduct = () => {
+
+
+        if(imagePreviews.length===0){
+            const product = { name, price, category, description, stock }
+            dispatch(updateProduct(id ,product))
+        }
+        else{
+            const product = { name, price, category, description, stock , images : imagePreviews }
+            dispatch(updateProduct(id ,product));
+        }
+
+
+    }
+
+
+    useEffect(() => {
+        if (error) {
+            Swal.fire("Not Updated", "Product has not been updated", "error");
+            dispatch(clearErrors())
+        }
+        if (success) {
+            Swal.fire("Updated", "Product has been updated", "success");
+            dispatch({ type: 'EDIT_PRODUCT_RESET' })
+            dispatch(getProductsAdmin())
+            closeEvent();
+
+        }
+
+       
+    }, [error, dispatch, success])
     return (
         <>
             <Box sx={{ m: 2 }} />
 
             <Typography variant="h5" align="center">
-                Update Products
+                Edit Products
             </Typography>
             <IconButton style={{ position: "absolute", top: 0, right: 0 }} onClick={closeEvent}>
                 <CloseIcon />
@@ -90,11 +159,75 @@ export default function EditForm({ closeEvent , fid } ) {
                         onChange={handlePriceChange}></TextField>
                 </Grid>
                 <Grid item xs={6}>
-                    <TextField id='outlines-basic' label="Category" variant="outlined" size="small" sx={{ minWidth: "100%" }} value={category} onChange={handleCategoryChange}></TextField>
+                    <Autocomplete
+                        id='category-combo'
+                        options={categories}
+                        value={category}
+                        getOptionLabel={(option) => option} // Return the option itself as a string
+                        onChange={(event, newValue) => setCategory(newValue)} // Update the category state on change
+                        renderInput={(params) => (
+                            <TextField
+                                {...params}
+                                label="Category"
+                                variant="outlined"
+                                size="small"
+                                sx={{ minWidth: "100%" }}
+                            />
+                        )}
+                    />
+
+                </Grid>
+                <Grid item xs={6}>
+                    <TextField id='outlines-basic'
+                        label="Stock"
+                        variant="outlined"
+                        size="small"
+                        sx={{ minWidth: "100%" }}
+                        value={stock}
+                        type="number"
+                        onChange={handleStockChange}></TextField>
+                </Grid>
+                <Grid item xs={12}>
+                    <Box>
+                        <TextareaAutosize
+                            id='outlines-basic'
+                            label="Description"
+                            variant="outlined"
+                            size="small"
+                            sx={{ minWidth: "100%" }}
+                            placeholder="Description"
+                            value={description}
+                            onChange={handleDescriptionChange}
+                            style={{ width: '100%', minHeight: '100px' }}
+                        />
+                    </Box>
+                </Grid>
+                <Grid item xs={12}>
+                    <Input
+                        type="file"
+                        inputProps={{ multiple: true, accept: 'image/*' }}
+                        onChange={handleFileChange}
+                    />
+                    {/* Display selected file names and image previews */}
+                    {selectedFiles.length > 0 && (
+                        <div style={{ maxHeight: '200px', overflowX: 'auto' }}>
+
+                            <div style={{ display: 'flex' }}>
+                                {imagePreviews.map((preview, index) => (
+                                    <img
+                                        key={index}
+                                        src={preview}
+                                        alt={`Preview ${index}`}
+                                        style={{ maxWidth: '100px', maxHeight: '100px', margin: '5px' }}
+                                    />
+                                ))}
+                            </div>
+                        </div>
+                    )}
                 </Grid>
                 <Grid item xs={12}>
                     <Typography variant="h5" align="center">
-                        <Button variant="contained" onClick={createUser}>
+                        <Button variant="contained" onClick={createProduct}>
                             Submit
                         </Button>
 
