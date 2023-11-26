@@ -1,0 +1,27 @@
+.service-container {
+    padding: 30px;
+  }
+  
+  .service-card {
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    transition: transform 0.2s ease-in-out;
+    height: 100%; /* Set a fixed height for all cards */
+  
+    &:hover {
+      transform: scale(1.09);
+    }
+  }
+  
+  
+  .service-icon {
+    font-size: 4rem;
+    color: #007bff;
+  }
+  
+  .card-title,
+  .card-text {
+    font-size: 1.2rem; /* Adjust font size as needed */
+    color: #333; /* Dark font color */
+    text-align: center; /* Center-align the text */  }
