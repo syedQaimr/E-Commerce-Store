@@ -56,10 +56,11 @@ const Payment = () => {
         try {
 
             const { data } = await api.post(
-                "/payment/process",
+                "/customer/payment/process",
                 paymentData,
             );
 
+            console.log("Yes ::")
             const client_secret = data.client_secret;
 
             if (!stripe || !elements) return;
