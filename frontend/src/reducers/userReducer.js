@@ -1,4 +1,4 @@
-import { LOGIN_REQUEST, LOGIN_FAIL, LOGIN_SUCCESS, CLEAR_ERRORS, REGISTER_SUCCESS, REGISTER_FAIL, REGISTER_REQUEST, LOAD_USER_REQUEST, LOAD_USER_SUCCESS, LOAD_USER_FAIL, LOGOUT_FAIL, LOGOUT_SUCCESS, UPDATE_PROFILE_FAIL, UPDATE_PROFILE_RESET, UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_SUCCESS, UPDATE_PASSWORD_FAIL, UPDATE_PASSWORD_REQUEST, UPDATE_PASSWORD_RESET, UPDATE_PASSWORD_SUCCESS, FORGOT_PASSWORD_FAIL, FORGOT_PASSWORD_REQUEST, FORGOT_PASSWORD_SUCCESS, RESET_PASSWORD_FAIL, RESET_PASSWORD_REQUEST, RESET_PASSWORD_SUCCESS, RESET_PASSWORD_RESET } from '../constants/userContant';
+import { LOGIN_REQUEST, LOGIN_FAIL, LOGIN_SUCCESS, CLEAR_ERRORS, REGISTER_SUCCESS, REGISTER_FAIL, REGISTER_REQUEST, LOAD_USER_REQUEST, LOAD_USER_SUCCESS, LOAD_USER_FAIL, LOGOUT_FAIL, LOGOUT_SUCCESS, UPDATE_PROFILE_FAIL, UPDATE_PROFILE_RESET, UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_SUCCESS, UPDATE_PASSWORD_FAIL, UPDATE_PASSWORD_REQUEST, UPDATE_PASSWORD_RESET, UPDATE_PASSWORD_SUCCESS, FORGOT_PASSWORD_FAIL, FORGOT_PASSWORD_REQUEST, FORGOT_PASSWORD_SUCCESS, RESET_PASSWORD_FAIL, RESET_PASSWORD_REQUEST, RESET_PASSWORD_SUCCESS, RESET_PASSWORD_RESET, GET_ALL_USER_FAIL, GET_ALL_USER_REQUEST, GET_ALL_USER_SUCCESS, DELETE_USER_REQUEST, DELETE_USER_SUCCESS, DELETE_USER_FAIL, DELETE_USER_RESET } from '../constants/userContant';
 
 
 export const userReducer = (state = { user: {} }, action) => {
@@ -126,7 +126,7 @@ export const resetPasswordReducer = (state = {}, action) => {
             }
         case RESET_PASSWORD_RESET:
             return {
-                message:null
+                message: null
             }
 
         case CLEAR_ERRORS:
@@ -141,3 +141,76 @@ export const resetPasswordReducer = (state = {}, action) => {
 }
 
 
+export const allUserReducer = ((state = { users: [] }, action) => {
+
+    switch (action.type) {
+        case GET_ALL_USER_REQUEST:
+
+            return {
+                loading: true,
+                users: []
+            }
+        case GET_ALL_USER_SUCCESS:
+
+            return {
+                loading: false,
+                users: action.payload.users,
+            }
+
+        case GET_ALL_USER_FAIL:
+
+
+            return {
+                loading: false,
+                error: action.payload
+            }
+        case CLEAR_ERRORS:
+
+            return {
+                ...state,
+                error: null
+            }
+
+
+        default:
+            return state
+    }
+})
+
+
+
+export const userDeleteReducer = (state = {}, action) => {
+    switch (action.type) {
+        case DELETE_USER_REQUEST:
+            return {
+                loading: true,
+                ...state
+            }
+        case DELETE_USER_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                isDeleted: action.payload,
+            }
+        case DELETE_USER_FAIL:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload,
+            }
+        case DELETE_USER_RESET:
+            return {
+                error: null,
+                isDeleted: false
+            }
+        case CLEAR_ERRORS:
+            return {
+                ...state,
+                error: null
+            }
+
+        default:
+            return state
+
+    }
+}
