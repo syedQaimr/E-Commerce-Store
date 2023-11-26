@@ -56,26 +56,26 @@ const Navbar = () => {
                             <NavLink to="/" >Home</NavLink>
                         </li>
                         <li>
-                            <NavLink to="/products" >Products</NavLink>
+                            <NavLink to="/customer/products" >Products</NavLink>
                         </li>
                         <li>
-                            <NavLink to="/service" >Services</NavLink>
+                            <NavLink to="/customer/service" >Services</NavLink>
                         </li>
                         <li>
-                            <NavLink to="/contact" >Contact</NavLink>
+                            <NavLink to="/customer/contact" >Contact</NavLink>
                         </li>
                         <li>
-                            <NavLink to="/search" >
+                            <NavLink to="/customer/search" >
                                 <AiOutlineSearch className="icons" style={{ fontSize: '24px' }} />
                             </NavLink>
                         </li>
                         <li>
-                            <NavLink to="/login" >
+                            <NavLink to="/customer/login" >
                                 <BiSolidUserCircle className="icons" style={{ fontSize: '24px' }} />
                             </NavLink>
                         </li>
                         <li>
-                            <NavLink to="/nothing" className={(navData) => navData.isActive ? 'active': "nothing"}>
+                            <NavLink to="/customer/cart" className={(navData) => navData.isActive ? 'active': "nothing"}>
                                 <AiFillShopping className="icons" style={{ fontSize: '24px' }} />
                             </NavLink>
                             
