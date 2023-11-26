@@ -13,7 +13,7 @@ import { Divider } from '@mui/material';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
-import DeleteIcon from '@mui/icons-material/Delete';
+import DeleteIcon from '@mui/icons-material/DeleteSweep';
 
 import Swal from 'sweetalert2';
 import TextField from '@mui/material/TextField';
@@ -66,6 +66,7 @@ export default function UsersList() {
                 email,
                 role,
                 avatar,
+                Active
             } = user;
 
             const rowData = {
@@ -74,6 +75,7 @@ export default function UsersList() {
                 email,
                 role,
                 avatar,
+                Active
             };
 
 
@@ -90,16 +92,14 @@ export default function UsersList() {
         console.log(id)
         Swal.fire({
             title: 'Are You Sure',
-            text: "You won't be able to revert this!",
+            text: "You Changes Effect Customers!",
             icon: 'warning',
             showCancelButton: 'true',
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, delete it!',
+            confirmButtonText: 'Yes, Update Status!',
         }).then((result) => {
             if (result.value) {
-                const updatedRows = rows.filter((row) => row.id !== id);
-                setRows(updatedRows);
                 dispatch(deleteUser(id))
             }
         });
@@ -162,7 +162,7 @@ export default function UsersList() {
             dispatch(clearErrors())
         }
         if (deleteSuccess) {
-            Swal.fire('Deleted!', 'User Successfully Deleted', 'success');
+            Swal.fire('Updated!', 'User Updated Successfully', 'success');
             dispatch({type : DELETE_USER_RESET})
         }
 
@@ -267,6 +267,18 @@ export default function UsersList() {
                                         <span>{sortDirection === 'asc' ? ' ▼' : ' ▲'}</span>
                                     )}
                                 </TableCell>
+                                <TableCell
+                                    align="center"
+                                    style={{
+                                        minWidth: '100px',
+                                        color: 'white',
+                                        backgroundColor: 'black',
+                                        fontSize: '15px',
+                                        cursor: 'pointer',
+                                    }}
+                                >
+                                    Active
+                                </TableCell>
 
                                 <TableCell
                                     align="center"
@@ -327,6 +339,13 @@ export default function UsersList() {
                                                 style={{ minWidth: '100px', fontSize: '13px', color: row.role === 'admin' ? 'red' : 'green' }}
                                             >
                                                 {row.role}
+                                            </TableCell>
+
+                                            <TableCell
+                                                align="center"
+                                                style={{ minWidth: '100px', fontSize: '13px', color: row.Active === true ? 'green' : 'red' }}
+                                            >
+                                                {row.Active ? "Active" : "InActive" }
                                             </TableCell>
 
                                             <TableCell style={{ minWidth: '100px', fontSize: '13px' }}>
