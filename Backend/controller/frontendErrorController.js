@@ -4,6 +4,8 @@ const FrontendError = require('../models/frontendLog');
 
 
 const frontendErrorController = {
+        // Catching front end error
+
     async storeError(req, res, next) {
 
         const { errorInfo, error } = req.body;
@@ -12,9 +14,6 @@ const frontendErrorController = {
         console.log(String(firstLine));
 
         try {
-
-
-
 
             const frontendError = new FrontendError({
                 errorInfo,

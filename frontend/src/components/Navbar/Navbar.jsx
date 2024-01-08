@@ -98,7 +98,7 @@ export default function Navbar() {
   };
 
   const handleProfile = () => {
-    navigate("/account");
+    navigate("/customer/account");
   };
 
   const handleMobileMenuOpen = (event) => {
@@ -202,6 +202,7 @@ export default function Navbar() {
               aria-haspopup="true"
               onClick={handleProfileMenuOpen}
               color="inherit"
+              fontFamily = "Arial"
             >
               <AccountCircle style={{ fontSize: '3rem' }}/>
             </IconButton>
@@ -214,6 +215,7 @@ export default function Navbar() {
               aria-haspopup="true"
               onClick={handleMobileMenuOpen}
               color="inherit"
+              fontFamily = "Arial"
             >
               <MoreIcon />
             </IconButton>

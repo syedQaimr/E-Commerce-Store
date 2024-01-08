@@ -406,35 +406,35 @@ export default function ProductList() {
                     >
                       <TableCell
                         align="center"
-                        style={{ minWidth: '100px', fontSize: '13px' }}
+                        style={{ minWidth: '100px', fontSize: '13px' , fontFamily : "Arial", fontWeight: 'bold'  }}
                       >
                         {row.name}
                       </TableCell>
                       <TableCell
                         align="center"
-                        style={{ minWidth: '100px', fontSize: '13px' }}
+                        style={{ minWidth: '100px', fontSize: '13px' , fontFamily : "Arial", fontWeight: 'bold'  }}
                       >
                         {row.price}
                       </TableCell>
                       <TableCell
                         align="center"
-                        style={{ minWidth: '100px', fontSize: '13px' }}
+                        style={{ minWidth: '100px', fontSize: '13px' , fontFamily : "Arial", fontWeight: 'bold' }}
                       >
                         {row.category}
                       </TableCell>
                       <TableCell
                         align="center"
-                        style={{ minWidth: '100px', fontSize: '13px' }}
+                        style={{ minWidth: '100px', fontSize: '13px' , fontFamily : "Arial", fontWeight: 'bold' }}
                       >
                         {row.stock}
                       </TableCell>
                       <TableCell
                         align="center"
-                        style={{ minWidth: '100px', fontSize: '13px' }}
+                        style={{ minWidth: '100px', fontSize: '13px' , fontFamily : "Arial", fontWeight: 'bold'  }}
                       >
                         {row.ratings}
                       </TableCell>
-                      <TableCell style={{ minWidth: '100px', fontSize: '13px' }}>
+                      <TableCell style={{ minWidth: '100px', fontSize: '13px'}}>
                         <Stack
                           spacing={4}
                           direction="row"
@@ -454,10 +454,10 @@ export default function ProductList() {
                       </TableCell>
                       <TableCell
                         align="center"
-                        style={{ minWidth: '100px', fontSize: '13px', color: row.Active === true ? 'green' : 'red' }}                      >
+                        style={{ minWidth: '100px', fontSize: '13px', fontFamily : "Arial", fontWeight: 'bold'  ,color: row.Active === true ? 'green' : 'red' }}                      >
                         {row.Active ? "Active" : "InActive"}
                       </TableCell>
-                      <TableCell style={{ minWidth: '100px', fontSize: '13px' }}>
+                      <TableCell style={{ minWidth: '100px', fontSize: '13px' , fontVariant : "h7"}}>
                         <Stack
                           spacing={4}
                           direction="row"

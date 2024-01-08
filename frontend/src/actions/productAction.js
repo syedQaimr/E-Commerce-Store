@@ -7,6 +7,7 @@ import {
 
 
 } from '../constants/productConstant'
+import {useSelector} from 'react-redux'
 import { api } from '../apies/api';
 
 
@@ -155,11 +156,16 @@ export const updateProduct = (id , updateProduct={}) => async (dispatch) => {
 }
 
 
-export const getProductDetails = (id) => async (dispatch) => {
+
+export const getProductDetails = (id , user={}) => async (dispatch) => {
 
     try {
+       console.log(user)
         dispatch({ type: PRODUCT_DETAILS_REQUEST });
         const { data } = await api.get(`/products/${id}`);
+         if( data.product.review && data.product.review.reviews && user.role != "admin"){
+                data.product.review.reviews = data.product.review.reviews.filter(review => review.Active)
+            }
 
         dispatch({
             type: PRODUCT_DETAILS_SUCCESS,
@@ -183,6 +189,7 @@ export const newReview = (reviewData) => async (dispatch) => {
         dispatch({ type: NEW_REVIEW_REQUEST });
         const { data } = await api.put('/review' , reviewData);
 
+        
         dispatch({
             type: NEW_REVIEW_SUCCESS,
             payload: data.success

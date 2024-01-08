@@ -9,6 +9,7 @@ const ApiFeatures = require('../utils/ApiFeatures');
 const ErrorHandler = require('../utils/errorhandler')
 
 const orderController = {
+        // Create a new order
     async newOrder(req, res, next) {
 
         try {
@@ -55,6 +56,8 @@ const orderController = {
         }
 
     },
+        // Get Single Order on Id Base
+
 
     async getSingleOrder(req, res, next) {
 
@@ -72,6 +75,8 @@ const orderController = {
         }
     },
 
+    // Get Orders on specific user id
+
     async myOrder(req, res, next) {
 
         try {
@@ -84,6 +89,8 @@ const orderController = {
 
         }
     },
+
+   // Get all orders
 
     async getAllOrder(req, res, next) {
 
@@ -274,6 +281,8 @@ const orderController = {
 
 
 }
+
+// Update Stocck function on if order delieverd
 
 async function updateStock(id, quantity) {
 

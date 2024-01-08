@@ -22,6 +22,7 @@ import { useNavigate } from 'react-router-dom';
 import AssessmentIcon from '@mui/icons-material/Assessment';
 import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
 import InventoryIcon from '@mui/icons-material/Inventory';
+import '../../pages/Dash.css'
 
 
 // import {useAppStore} from '../../AppStore'
@@ -106,7 +107,7 @@ export default function Sidenav() {
                 <HomeIcon fontSize="large" />
               </ListItemIcon>
               <ListItemText
-                primaryTypographyProps={{ variant: 'h6', sx: { color: "#424242",  } , fontSize: '1.5rem'}}
+                primaryTypographyProps={{ variant: 'h7' , fontSize: '1.5rem'}}
                 primary="Home"
                 sx={{ ml: 2 }}
               />
@@ -118,7 +119,7 @@ export default function Sidenav() {
                 <InfoIcon fontSize="large" />
               </ListItemIcon>
               <ListItemText
-                primaryTypographyProps={{ variant: 'h6', sx: { color: "#424242",  fontSize: '1.5rem'} }}
+                primaryTypographyProps={{ variant: 'h7', sx: { fontSize: '1.5rem'} }}
                 primary="About"
                 sx={{ ml: 2 }}
               />
@@ -130,7 +131,7 @@ export default function Sidenav() {
                 <LocalGroceryStoreIcon fontSize="large" />
               </ListItemIcon>
               <ListItemText
-                primaryTypographyProps={{ variant: 'h6', sx: { color: "#424242",  },fontSize: '1.5rem' }}
+                primaryTypographyProps={{ variant: 'h7',fontSize: '1.5rem' }}
                 primary="Products"
                 sx={{ ml: 2 }}
               />
@@ -142,19 +143,19 @@ export default function Sidenav() {
                 <SettingsApplicationsIcon  fontSize="large" />
               </ListItemIcon>
               <ListItemText
-                primaryTypographyProps={{ variant: 'h6', sx: { color: "#424242",  },fontSize: '1.5rem' }}
+                primaryTypographyProps={{ variant: 'h7',fontSize: '1.5rem' }}
                 primary="Services"
                 sx={{ ml: 2 }}
               />
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding onClick={()=>{navigate("/admin/orders")}}>
-            <ListItemButton sx={{ '&:hover': { backgroundColor: 'rgba(0, 0, 0, 0.05)' } }}>
+            <ListItemButton sx={{ '&:hover': { backgroundColor: 'rgba(0, 0, 0, 0.05)' , color : "black" } }}>
               <ListItemIcon >
                 <OrderIcon fontSize="large" />
               </ListItemIcon>
               <ListItemText
-                primaryTypographyProps={{ variant: 'h6', sx: { color: "#424242",  },fontSize: '1.5rem' }}
+                primaryTypographyProps={{ variant: 'h7',fontSize: '1.5rem' }}
                 primary="Orders"
                 sx={{ ml: 2 }}
               />
@@ -166,7 +167,7 @@ export default function Sidenav() {
                 <SupervisedUserCircleIcon fontSize="large" />
               </ListItemIcon>
               <ListItemText
-                primaryTypographyProps={{ variant: 'h6', sx: { color: "#424242",  },fontSize: '1.5rem' }}
+                primaryTypographyProps={{ variant: 'h7',fontSize: '1.5rem' }}
                 primary="Users"
                 sx={{ ml: 2 }}
               />
@@ -179,7 +180,7 @@ export default function Sidenav() {
                 <AssessmentIcon fontSize="large" />
               </ListItemIcon>
               <ListItemText
-                primaryTypographyProps={{ variant: 'h6', sx: { color: "#424242",  },fontSize: '1.5rem' }}
+                primaryTypographyProps={{ variant: 'h7',fontSize: '1.5rem' }}
                 primary="Sales Report"
                 sx={{ ml: 2 }}
               />
@@ -191,7 +192,7 @@ export default function Sidenav() {
                 <AssignmentTurnedInIcon fontSize="large" />
               </ListItemIcon>
               <ListItemText
-                primaryTypographyProps={{ variant: 'h6', sx: { color: "#424242",  },fontSize: '1.5rem' }}
+                primaryTypographyProps={{ variant: 'h7',fontSize: '1.5rem' }}
                 primary="Order Delivery Report"
                 sx={{ ml: 2 }}
               />
@@ -203,7 +204,7 @@ export default function Sidenav() {
                 <InventoryIcon fontSize="large" />
               </ListItemIcon>
               <ListItemText
-                primaryTypographyProps={{ variant: 'h6', sx: { color: "#424242",  },fontSize: '1.5rem' }}
+                primaryTypographyProps={{ variant: 'h7',fontSize: '1.5rem' }}
                 primary="Inventory Report"
                 sx={{ ml: 2 }}
               />

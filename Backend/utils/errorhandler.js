@@ -1,8 +1,11 @@
 class ErrorHandler extends Error{
-    constructor(message , statusCode){
+    constructor(message , statusCode , functionName , modelName , controllerName){
         super(message);
-        this.statusCode = statusCode
-
+        console.log(statusCode, functionName , modelName  , controllerName)
+        this.statusCode = statusCode,
+        this.functionName = functionName,
+        this.modelName = modelName,
+        this.controllerName = controllerName,
         Error.captureStackTrace(this , this.constructor)
     }
 }

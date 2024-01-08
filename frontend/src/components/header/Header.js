@@ -62,9 +62,6 @@ const Navbar = () => {
                             <NavLink to="/customer/service" >Services</NavLink>
                         </li>
                         <li>
-                            <NavLink to="/customer/contact" >Contact</NavLink>
-                        </li>
-                        <li>
                             <NavLink to="/customer/search" >
                                 <AiOutlineSearch className="icons" style={{ fontSize: '24px' }} />
                             </NavLink>

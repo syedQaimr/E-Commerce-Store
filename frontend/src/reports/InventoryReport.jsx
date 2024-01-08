@@ -72,12 +72,6 @@ const InventoryReportPage = React.forwardRef((props, ref) => {
 
     }, [dispatch, alert, error])
 
-
-
-
-
-
-
     return (
         <> {loading ? <Loader /> :
             <div ref={ref} style={{ marginTop: '2%' }} >
@@ -91,8 +85,6 @@ const InventoryReportPage = React.forwardRef((props, ref) => {
                         </p>
                     </div>
                 </div>
-
-
                 <div className="mt-5" style={{ marginTop: '10%', marginLeft: "10%", marginRight: "10%", padding: "2%" }}>
                     <Row>
                         <Col xs={12} md={6}>
@@ -114,8 +106,6 @@ const InventoryReportPage = React.forwardRef((props, ref) => {
                         </Col>
                     </Row>
                 </div>
-
-
                 <div style={{ marginLeft: "10%", marginRight: "10%", padding: "2%" }}>
                     <Row >
                         <Col xs={12}>
@@ -126,8 +116,6 @@ const InventoryReportPage = React.forwardRef((props, ref) => {
                                         <th style={{ background: "blue", color: "white", textAlign: 'center' }}>Product Description</th>
                                         <th style={{ background: "blue", color: "white", textAlign: 'center' }}>Product Price</th>
                                         <th style={{ background: "blue", color: "white", textAlign: 'center' }}>Product Stock</th>
-
-
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -144,11 +132,6 @@ const InventoryReportPage = React.forwardRef((props, ref) => {
                         </Col>
                     </Row>
                 </div>
-
-
-
-
-
             </div>
         }</>
 

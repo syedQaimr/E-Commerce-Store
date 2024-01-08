@@ -6,6 +6,8 @@ const stripe = require("stripe")(STRIPE_SECRET_KEY);
 
 
 const paymentController = {
+    // Process payment on payment the amount
+
     async processPayemnt(req, res, next) {
         console.log( req.body.amount)
         try {
@@ -28,6 +30,8 @@ const paymentController = {
 
         }
     },
+        // Get Stripe API KEY
+
     async sendStripeApiKey(req, res, next) {
         try {
             console.log(STRIPE_API_KEY)

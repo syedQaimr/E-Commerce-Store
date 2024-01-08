@@ -159,11 +159,11 @@ export default function CustomizedTables() {
                                                     {row.totalPrice}
                                                 </StyledTableCell>
                                                 <StyledTableCell component="th" scope="row"
-                                                    style={{ color : row.paymentStatus === 'succeeded' ? 'lightgreen' : 'red' }}>
+                                                    style={{ color : row.paymentStatus === 'succeeded' ? 'green' : 'red' }}>
                                                     {row.paymentStatus}
                                                 </StyledTableCell>
                                                 <StyledTableCell component="th" scope="row"
-                                                style={{ color : row.orderStatus === 'Complete' ? 'green' : 'red' }}
+                                                style={{ color : row.orderStatus === 'Delivered' ? 'green' : 'red' }}
                                                 >
                                                     {row.orderStatus}
                                                 </StyledTableCell>

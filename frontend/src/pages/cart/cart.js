@@ -40,7 +40,7 @@ const Cart = () => {
     };
 
     const checkoutHandler = () => {
-        navigate("/shipping");
+        navigate("/customer/shipping");
     };
 
     return (
@@ -50,7 +50,7 @@ const Cart = () => {
                     <RemoveShoppingCartIcon />
 
                     <Typography>No Product in Your Cart</Typography>
-                    <Link to="/products">View Products</Link>
+                    <Link to="/customer/products">View Products</Link>
                 </div>
             ) : (
                 <Fragment>

@@ -58,7 +58,11 @@ export default function UsersList() {
 
 
   const handleReset = () => {
-    dispatch(getProductDetails(id))
+    const role ="admin";
+    const user={role};
+
+    dispatch(getProductDetails(id , user));
+
     getData()
   };
 
@@ -176,8 +180,10 @@ export default function UsersList() {
       dispatch({ type: 'EDIT_PRODUCT_RESET' })
     }
 
+    const role ="admin";
+    const user={role};
 
-    dispatch(getProductDetails(id));
+    dispatch(getProductDetails(id , user));
 
 
   }, [dispatch, alert, error, deleteError, deleteSuccess])

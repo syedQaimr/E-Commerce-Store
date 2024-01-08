@@ -4,7 +4,7 @@ import { Chart } from "react-google-charts";
 export const options = {
   chart: {
     title: "Company Performance",
-    subtitle: "Sales, Expenses, and Profit: 2014-2017",
+    subtitle: "Orders: One Week",
   },
   colors: ["rgb(53,138,148)", "rgb(37,11,165)", "#188310"],
   vAxis: {

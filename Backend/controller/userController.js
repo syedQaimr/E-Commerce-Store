@@ -9,6 +9,8 @@ const fs = require('fs');
 const { BACKEND_SERVER_PATH } = require('../config/index');
 
 const userController = {
+        // Register New User
+
     async userRegister(req, res, next) {
         try {
 
@@ -21,6 +23,8 @@ const userController = {
             const imagePath = `${Date.now()}-${name}.png`;
 
 
+
+             // Store User image loacal with file_name current date and and name
 
 
             try {
@@ -73,7 +77,7 @@ const userController = {
                 return next(new ErrorHandler("Admin Remove You Kindly Contact us", 401, "userlogin", "User", "userController"));
             }
 
-
+            // call send Token utils to generate token and send through cookies
             sendToken(user, 200, res)
         }
         catch (error) {
@@ -85,6 +89,8 @@ const userController = {
     },
 
     async logOutUser(req, res, next) {
+            // Remove Token from cookies
+
 
         try {
             res.cookie("token", null, { expires: new Date(Date.now()), httpOnly: true });
@@ -109,6 +115,8 @@ const userController = {
 
         const resetToken = user.getResetpasswordToken();
 
+
+            // save user with resetPassworsToken and its expiry time
 
 
         await user.save({ validateBeforeSave: false });
@@ -148,6 +156,8 @@ const userController = {
     async resetPassword(req, res, next) {
 
         try {
+
+                // Verify Token and check is it not expire
 
             const resetPasswordToken = crypto.createHash("sha256").update(req.body.token).digest("hex")
             const user = await User.findOne({ resetPasswordToken, resetPasswordExpire: { $gt: Date.now() } });
@@ -245,6 +255,8 @@ const userController = {
             }
 
             console.log(req.user._id, req.user.id)
+                // Store image path in db
+
 
             const newUserData = {
                 name,

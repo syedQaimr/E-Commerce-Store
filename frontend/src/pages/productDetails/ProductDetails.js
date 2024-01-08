@@ -27,6 +27,8 @@ function ProductDetails() {
   const { product, loading, error } = useSelector((state) => state.prductDetails);
   const {  success, error : reviewError } = useSelector((state) => state.newReview);
 
+
+
   const { id } = useParams();
 
   const options = {

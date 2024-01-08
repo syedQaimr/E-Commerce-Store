@@ -8,6 +8,8 @@ const fs = require('fs');
 
 
 const productController = {
+   // Create new product
+
     async addProduct(req, res, next) {
         try {
 
@@ -67,13 +69,16 @@ const productController = {
         }
     },
 
-    async getAllProducts(req, res) {
+    // Get Products with Pagination
+
+
+    async getAllProducts(req, res , next) {
         try {
             const resultPerPage = 8
             const productCount = await Product.countDocuments();
 
             console.log(req.query)
-            const apiFeatures = new ApiFeatures(Product.find().populate('review'), req.query).search().filter().pagination(8);
+            const apiFeatures = new ApiFeatures(Product.find({ Active: true }).populate('review'), req.query).search().filter().pagination(8);
             const products = await apiFeatures.query;
 
             console.log(products.length)
@@ -84,6 +89,8 @@ const productController = {
 
         }
     },
+
+        // Get Products without Pagination
 
     async getAllProductsWithoutPagination(req, res) {
         try {
@@ -181,6 +188,11 @@ const productController = {
             if (!product) {
                 return next(new ErrorHandler("Product Not Found", 404, "getProductById", "Product", "productController"));
             }
+            const {role} = req.body
+            console.log(role)
+            // if( product.review && product.review.reviews && req.body.role != "admin"){
+            //     product.review.reviews = product.review.reviews.filter(review => review.Active)
+            // }
 
             res.status(200).json({ success: true, product });
         } catch (error) {
@@ -208,6 +220,7 @@ const productController = {
 
 
             const isReviewed = product.review.reviews.find((rev) => rev.user.toString() === req.user._id.toString());
+                // Check product from specific user is already reviewed
 
             if (isReviewed) {
 
@@ -253,8 +266,10 @@ const productController = {
                 return next(new ErrorHandler("Product Not Found", 404, "getproductReviews", "Product", "productController"));
 
             }
+            const filterReview = product.review.reviews.filter(review => review.Active)
+            console.log(filterReview)
 
-            res.status(200).json({ success: true, review: product.review.reviews });
+            res.status(200).json({ success: true, review: filterReview });
         } catch (error) {
             return next(new ErrorHandler(error.message, 500, "getproductReviews", "Product", "productController"));
         }

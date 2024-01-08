@@ -15,10 +15,10 @@ export default function AccordionDash(props) {
           aria-controls="panel1a-content"
           id="panel1a-header"
         >
-          <Typography>{props.topRatedProducts[0].name}</Typography>
+          <Typography style={{fontFamily : "Arial", fontWeight: 'bold' }}>{props.topRatedProducts[0].name}</Typography>
         </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
+        <AccordionDetails style={{fontFamily : "Arial", fontWeight: 'bold' }}>
+          <Typography style={{fontFamily : "Arial", fontWeight: 'bold' }}>
           {props.topRatedProducts[0].description}
           </Typography>
         </AccordionDetails>
@@ -29,10 +29,10 @@ export default function AccordionDash(props) {
           aria-controls="panel2a-content"
           id="panel2a-header"
         >
-          <Typography>{props.topRatedProducts[1].name}</Typography>
+          <Typography style={{fontFamily : "Arial", fontWeight: 'bold' }}>{props.topRatedProducts[1].name}</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <Typography>
+          <Typography style={{fontFamily : "Arial", fontWeight: 'bold' }}>
           {props.topRatedProducts[1].description}
           </Typography>
         </AccordionDetails>
@@ -43,10 +43,10 @@ export default function AccordionDash(props) {
           aria-controls="panel2a-content"
           id="panel2a-header"
         >
-          <Typography>{props.topRatedProducts[2].name}</Typography>
+          <Typography style={{fontFamily : "Arial", fontWeight: 'bold' }}>{props.topRatedProducts[2].name}</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <Typography>
+          <Typography style={{fontFamily : "Arial", fontWeight: 'bold' }}>
           {props.topRatedProducts[2].description}
           </Typography>
         </AccordionDetails>
@@ -57,10 +57,10 @@ export default function AccordionDash(props) {
           aria-controls="panel2a-content"
           id="panel2a-header"
         >
-          <Typography>{props.topRatedProducts[3].name}</Typography>
+          <Typography style={{fontFamily : "Arial", fontWeight: 'bold' }}>{props.topRatedProducts[3].name}</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <Typography>
+          <Typography style={{fontFamily : "Arial", fontWeight: 'bold' }}>
           {props.topRatedProducts[3].description}
           </Typography>
         </AccordionDetails>

@@ -10,6 +10,7 @@ const user = require('../models/user');
 
 const auth = async (req , res , next)=>{
 
+      // Get User id by decoded token
   try{
     const {token} = req.cookies;
     const decodedData = jwt.verify(token , ACCESS_TOKEN_SECRET);

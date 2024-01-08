@@ -56,7 +56,7 @@ const Payment = () => {
         try {
 
             const { data } = await api.post(
-                "/customer/payment/process",
+                "/payment/process",
                 paymentData,
             );
 
